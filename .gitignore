@@ -1,0 +1,4 @@
+GL/glad.c
+main-app
+.vscode/ipch/*
+Archive/*
