@@ -30,11 +30,7 @@ std::unique_ptr<Mesh> Mesh::createMesh(MeshID meshID)
         case MeshID::ICOSAHEDRON:
             ret = std::unique_ptr<Mesh>(new Icosahedron);
             break;
-        
-        case MeshID::TUBE:
-            ret = std::unique_ptr<Mesh>(new Tube);
-            break;
-        
+
         case MeshID::SPANNER:
             ret = std::unique_ptr<Mesh>(new Spanner);
             break;
@@ -58,11 +54,6 @@ ObjectData Cube::createObjectData()
 ObjectData Icosahedron::createObjectData()
 {
     return getMeshData("MeshFiles/Icosahedron.obj");
-}
-
-ObjectData Tube::createObjectData()
-{
-    return getMeshData("MeshFiles/Tube.obj");
 }
 
 ObjectData Spanner::createObjectData()

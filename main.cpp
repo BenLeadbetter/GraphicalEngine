@@ -23,9 +23,9 @@ int main()
     MeshManager meshManager;
 
     
-    Drawable stage(meshManager.getMesh(MeshID::CUBE));
+    Drawable stage(meshManager.getMesh(MeshID::ICOSAHEDRON));
     stage.setRenderMode(RenderMode::LINE);
-    stage.scale(10.0f); 
+    stage.scale(8.0f); 
     
 
 

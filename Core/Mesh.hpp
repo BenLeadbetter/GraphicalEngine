@@ -8,7 +8,6 @@ enum class MeshID {
     CUBE,
     SPHERE,
     ICOSAHEDRON,
-    TUBE,
     SPANNER
     };
 
@@ -36,11 +35,6 @@ class Sphere : public Mesh
 
 
 class Icosahedron : public Mesh
-{
-    ObjectData createObjectData();
-};
-
-class Tube : public Mesh
 {
     ObjectData createObjectData();
 };
