@@ -190,3 +190,14 @@ Vector3 cross(const Vector3& lhs, const Vector3& rhs)
         lhs.data[0] * rhs.data[1] - rhs.data[0] * lhs.data[1]
     );
 }
+
+Vector3 cwiseProduct(const Vector3& lhs, const Vector3& rhs)
+{
+    return Vector3(
+        {
+            lhs.data[0] * rhs.data[0],
+            lhs.data[1] * rhs.data[1],
+            lhs.data[2] * rhs.data[2]
+        }
+    );
+}

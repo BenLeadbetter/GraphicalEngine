@@ -8,6 +8,7 @@ class Vector2
 {
     friend Vector2 operator*(const float&, const Vector2&);
     friend float dot(const Vector2&, const Vector2&);
+    friend Vector2 cwiseProduct(const Vector2&, const Vector2&);
     
     public:
 
@@ -41,5 +42,6 @@ class Vector2
 std::ostream& operator<<(std::ostream& os, const Vector2&);
 Vector2 operator*(const float&, const Vector2&);
 float dot(const Vector2&, const Vector2&);
+Vector2 cwiseProduct(const Vector2&, const Vector2&);
 
 #endif

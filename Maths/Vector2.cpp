@@ -149,3 +149,13 @@ float dot(const Vector2& lhs, const Vector2& rhs)
         lhs.data[1] * rhs.data[1];
 }
 
+Vector2 cwiseProduct(const Vector2& lhs, const Vector2& rhs)
+{
+    return Vector2(
+        {
+            rhs.data[0] * lhs.data[0],
+            rhs.data[1] * lhs.data[1]
+        }
+    );
+}
+
