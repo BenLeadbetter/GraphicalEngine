@@ -23,7 +23,7 @@ int main()
     MeshManager meshManager;
 
     
-    Drawable stage(meshManager.getMesh(MeshID::ICOSAHEDRON));
+    Drawable stage(meshManager.getMesh(MeshID::CUBE));
     stage.setRenderMode(RenderMode::LINE);
     stage.scale(8.0f); 
     
@@ -33,7 +33,7 @@ int main()
     Particle testParticle(meshManager);
     testParticle.setVelocity(Vector3(3.2f, 3.1f, -5.8f));
     testParticle.setRadius(0.4f);
-    testParticle.setRenderMode(RenderMode::LINE);
+    testParticle.setRenderMode(RenderMode::FILL);
     testParticle.scale(0.5f);
     
 
