@@ -12,20 +12,21 @@
 */
 
 #include "../GL/Shader.h"
+#include "../Maths/Vector3.hpp"
 #include "Drawable.hpp"
 #include <glm/glm.hpp>
 
 struct ViewData
 {
-    ViewData(glm::vec3 EyeIn, glm::vec3 AtIn, glm::vec3 UpIn):
+    ViewData(const Vector3& EyeIn, const Vector3& AtIn, const Vector3& UpIn):
     Eye(EyeIn),
     At(AtIn),
     Up(UpIn)
     {};
 
-    glm::vec3 Eye;
-    glm::vec3 At;
-    glm::vec3 Up;
+    Vector3 Eye;
+    Vector3 At;
+    Vector3 Up;
 };
 
 struct ProjectionData
@@ -67,6 +68,7 @@ class Drawer
         void loadShader();
         void drawSolidPolygon(const Drawable&);
         void drawWireFramePolygon(const Drawable&);
+        void setObjectColorData(const Drawable&);
 
         //
         glm::mat4   viewChangeMatrix;

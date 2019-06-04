@@ -12,9 +12,9 @@
 static ViewData DefaultViewData()
 {
     return ViewData(
-        glm::vec3(3.0f, 0.0f, 0.0f),
-        glm::vec3(0.0f, 0.0f, 0.0f),
-        glm::vec3(0.0f, 0.0f, 1.0f)
+        Vector3(3.0f, 0.0f, 0.0f),
+        Vector3(0.0f, 0.0f, 0.0f),
+        Vector3(0.0f, 0.0f, 1.0f)
     );
 }
 
@@ -40,12 +40,7 @@ shader(
     shader.use();
     shader.setMat4("view", viewChangeMatrix);
     shader.setMat4("proj", projectionMatirx);
-    shader.setVec3(
-        "eyePos", 
-        DefaultViewData().Eye.x,
-        DefaultViewData().Eye.y,
-        DefaultViewData().Eye.z
-        );
+    shader.setVec3("eyePos", DefaultViewData().Eye);
     
     setLightData(
         glm::vec3(1.0f, 0.0f, 0.0f),
@@ -135,17 +130,9 @@ void Drawer::draw(Drawable& drawable)
 
 void Drawer::drawSolidPolygon(const Drawable& drawable)
 {
-    // bind vertex array
     glBindVertexArray(drawable.getDrawData().VertexArrayID);
 
-    // set colour to shader
-    shader.setVec4(
-        "objectColor", 
-        drawable.getColor()[0], 
-        drawable.getColor()[1], 
-        drawable.getColor()[2], 
-        drawable.getColor()[3]
-        );
+    setObjectColorData(drawable);
 
     // set up for fill drawing
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -171,13 +158,7 @@ void Drawer::drawWireFramePolygon(const Drawable& drawable)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // set colour to shader
-    shader.setVec4(
-        "objectColor", 
-        drawable.getColor()[0], 
-        drawable.getColor()[1], 
-        drawable.getColor()[2], 
-        drawable.getColor()[3]
-        );
+    setObjectColorData(drawable);
 
     glCheckError();
 
@@ -202,4 +183,12 @@ void Drawer::drawWireFramePolygon(const Drawable& drawable)
     glDisable(GL_LINE_SMOOTH);
 
     glCheckError();
+}
+
+
+void Drawer::setObjectColorData(const Drawable& drawable)
+{
+    shader.use();
+
+    shader.setVec4("matDiff", drawable.getColorData().diffuse);
 }

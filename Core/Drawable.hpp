@@ -7,6 +7,7 @@
 
 #include "BufferData.hpp"
 #include "../Maths/Matrix4.hpp"
+#include "../Maths/Vector4.hpp"
 #include <memory>
 #include <array>
 
@@ -22,6 +23,14 @@ struct DrawData
     Matrix4 WorldTransform = Matrix4(1.0);
 };
 
+struct ObjectColorData
+{
+    Vector4 diffuse = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+    Vector4 specular = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+    Vector4 emissive = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+    Vector4 ambient = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+};
+
 class Drawable
 {
     public:
@@ -34,11 +43,10 @@ class Drawable
         Drawable& operator=(const Drawable&);
         
         //
-        std::array<float, 4> getColor() const;
+        ObjectColorData getColorData() const;
         DrawData getDrawData() const;
-        bool isActive() const; 
         void setMesh(std::shared_ptr<BufferData> dataPtr);
-        void setColor(const float&, const float&, const float&, const float&);
+        void setColorData(const ObjectColorData&);
         void setRenderMode(RenderMode mode);
 
 
@@ -51,9 +59,8 @@ class Drawable
     private:
 
         //
-        std::array<float, 4> Color;
+        ObjectColorData colorData;
         Matrix4 transform;
-        bool active;
         std::shared_ptr<BufferData> GLdata;
         RenderMode renderMode;
 };
