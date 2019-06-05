@@ -139,14 +139,20 @@ void Shader::setMat4(const std::string& name, Matrix4& value) const
     glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, value.transpose().getData());
 }
 
-void Shader::setVec4(const std::string& name, float x, float y, float z, float w) const
+void Shader::setVec4(const std::string& name, const Vector4& vec) const
 {
-    unsigned int vecLocation = glGetUniformLocation(ID, name.c_str());
-    glUniform4f(vecLocation, x, y, z, w);
+    unsigned int vectorLocation = glGetUniformLocation(ID, name.c_str());
+    glUniform4f(vectorLocation, vec.x(), vec.y(), vec.z(), vec.w());
 }
 
-void Shader::setVec3(const std::string& name, float x, float y, float z)
+void Shader::setVec3(const std::string& name, const Vector3& vec)
 {
     unsigned int vecLocation = glGetUniformLocation(ID, name.c_str());
-    glUniform3f(vecLocation, x, y, z);
+    glUniform3f(vecLocation, vec.x(), vec.y(), vec.z());
+}
+
+void Shader::setVec2(const std::string& name, const Vector2& vec)
+{
+    unsigned int vecLocation = glGetUniformLocation(ID, name.c_str());
+    glUniform2f(vecLocation, vec.x(), vec.y());
 }

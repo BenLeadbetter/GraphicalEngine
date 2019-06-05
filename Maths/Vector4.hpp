@@ -11,6 +11,7 @@ class Vector4
     friend Vector4 operator*(const float&, const Vector4&);
     friend float dot(const Vector4& lhs, const Vector4& rhs);
     friend Vector4 cross(const Vector4& lhs, Vector4& rhs);
+    friend Vector4 cwiseProduct(const Vector4&, const Vector4&);
     
     public:
 
@@ -18,8 +19,8 @@ class Vector4
         template<typename T> Vector4(T&&, T&&, T&&, T&&);
         Vector4(const Vector3&);
 
-        Vector4 operator+(const Vector4& rhs);
-        Vector4 operator-(const Vector4& rhs);
+        Vector4 operator+(const Vector4& rhs) const;
+        Vector4 operator-(const Vector4& rhs) const;
         Vector4& operator +=(const Vector4& rhs);
         Vector4& operator -=(const Vector4& rhs);
         Vector4 operator*(const float&);
@@ -49,5 +50,7 @@ std::ostream& operator<<(std::ostream& os, const Vector4& vec);
 Vector4 operator*(const float&, const Vector4&);
 
 float dot(const Vector4& lhs, const Vector4& rhs);
+Vector4 cwiseProduct(const Vector4&, const Vector4&);
+
 
 #endif

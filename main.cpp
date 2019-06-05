@@ -1,17 +1,9 @@
-// #define CATCH_CONFIG_MAIN
-// #include <catch.hpp>
-
 #include "Core/Window.hpp"
 #include "Core/Drawer.hpp"
 #include "Core/MeshManager.hpp"
 #include "Core/Particle.hpp"
 
-#include "Core/Stopwatch.hpp"
-
 #include <cmath>
-#include <unistd.h>
-
-#include <iostream>
 
 int main()
 {
@@ -23,7 +15,7 @@ int main()
     MeshManager meshManager;
 
     
-    Drawable stage(meshManager.getMesh(MeshID::ICOSAHEDRON));
+    Drawable stage(meshManager.getMesh(MeshID::CUBE));
     stage.setRenderMode(RenderMode::LINE);
     stage.scale(8.0f); 
     
@@ -33,7 +25,7 @@ int main()
     Particle testParticle(meshManager);
     testParticle.setVelocity(Vector3(3.2f, 3.1f, -5.8f));
     testParticle.setRadius(0.4f);
-    testParticle.setRenderMode(RenderMode::LINE);
+    testParticle.setRenderMode(RenderMode::FILL);
     testParticle.scale(0.5f);
     
 
@@ -55,11 +47,12 @@ int main()
             
         drawer.setView(
             ViewData(
-                glm::vec3(5.0 * std::sin((float)glfwGetTime()), 5.0 * std::cos((float)glfwGetTime()), 3.5f),
-                glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 0.0f, 1.0f)
+                Vector3(5.0 * std::sin((float)glfwGetTime()), 5.0 * std::cos((float)glfwGetTime()), 3.5),
+                Vector3(0.0f, 0.0f, 0.0f),
+                Vector3(0.0f, 0.0f, 1.0f)
             )
         );
+
         drawer.updateShader();
         /*
         *   Render 

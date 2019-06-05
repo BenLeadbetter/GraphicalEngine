@@ -10,17 +10,6 @@ Vector3::Vector3():
 data(std::array<float, 3>{0, 0, 0})
 {}
 
-template<typename T>
-Vector3::Vector3(T&& x, T&& y, T&& z):
-data(
-    {
-        std::forward<T>(x),
-        std::forward<T>(y),
-        std::forward<T>(z)
-    }
-)
-{}
-
 template Vector3::Vector3(float&&, float&&, float&&);
 template Vector3::Vector3(float&, float&, float&);
 
@@ -34,7 +23,7 @@ data(
 )
 {}
 
-Vector3 Vector3::operator+(const Vector3& rhs)
+Vector3 Vector3::operator+(const Vector3& rhs) const
 {
     return Vector3(
         this->x() + rhs.x(),
@@ -43,7 +32,7 @@ Vector3 Vector3::operator+(const Vector3& rhs)
         );
 }
 
-Vector3 Vector3::operator-(const Vector3& rhs)
+Vector3 Vector3::operator-(const Vector3& rhs) const
 {
     return Vector3(
         this->x() - rhs.x(),
@@ -188,5 +177,16 @@ Vector3 cross(const Vector3& lhs, const Vector3& rhs)
         lhs.data[1] * rhs.data[2] - rhs.data[1] * lhs.data[2],
         rhs.data[0] * lhs.data[2] - lhs.data[0] * rhs.data[2],
         lhs.data[0] * rhs.data[1] - rhs.data[0] * lhs.data[1]
+    );
+}
+
+Vector3 cwiseProduct(const Vector3& lhs, const Vector3& rhs)
+{
+    return Vector3(
+        {
+            lhs.data[0] * rhs.data[0],
+            lhs.data[1] * rhs.data[1],
+            lhs.data[2] * rhs.data[2]
+        }
     );
 }

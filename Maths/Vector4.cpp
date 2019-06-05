@@ -33,7 +33,7 @@ data(
 )
 {}
 
-Vector4 Vector4::operator+(const Vector4& rhs)
+Vector4 Vector4::operator+(const Vector4& rhs) const
 {
     return Vector4(
         this->x() + rhs.x(),
@@ -43,7 +43,7 @@ Vector4 Vector4::operator+(const Vector4& rhs)
         );
 }
 
-Vector4 Vector4::operator-(const Vector4& rhs)
+Vector4 Vector4::operator-(const Vector4& rhs) const
 {
     return Vector4(
         this->x() - rhs.x(),
@@ -200,4 +200,16 @@ float dot(const Vector4& lhs, const Vector4& rhs)
         lhs.data[1] * rhs.data[1] +
         lhs.data[2] * rhs.data[2] +
         lhs.data[3] * rhs.data[3];
+}
+
+Vector4 cwiseProduct(const Vector4& lhs, const Vector4& rhs)
+{
+    return Vector4(
+        {
+            lhs.data[0] * rhs.data[0],
+            lhs.data[1] * rhs.data[1],
+            lhs.data[2] * rhs.data[2],
+            lhs.data[3] * rhs.data[3]
+        }
+    );
 }

@@ -12,6 +12,7 @@ class Vector3
     friend Vector3 operator*(const float&, const Vector3&);
     friend float dot(const Vector3&, const Vector3&);
     friend Vector3 cross(const Vector3&, const Vector3&);
+    friend Vector3 cwiseProduct(const Vector3&, const Vector3&);
     
     public:
 
@@ -19,8 +20,8 @@ class Vector3
         template<typename T> Vector3(T&& x, T&& y, T&& z);
         Vector3(const Vector4&);
         
-        Vector3 operator+(const Vector3& rhs);
-        Vector3 operator-(const Vector3& rhs);
+        Vector3 operator+(const Vector3& rhs) const;
+        Vector3 operator-(const Vector3& rhs) const;
         Vector3& operator +=(const Vector3& rhs);
         Vector3& operator -=(const Vector3& rhs);
         Vector3 operator*(const float&) const;
@@ -49,7 +50,19 @@ Vector3 operator*(const float&, const Vector3&);
 
 float dot(const Vector3& lhs, const Vector3& rhs);
 Vector3 cross(const Vector3& lhs, const Vector3& rhs);
+Vector3 cwiseProduct(const Vector3&, const Vector3&);
 
+
+template<typename T>
+Vector3::Vector3(T&& x, T&& y, T&& z):
+data(
+    {
+        std::forward<T>(x),
+        std::forward<T>(y),
+        std::forward<T>(z)
+    }
+)
+{}
 
 
 #endif

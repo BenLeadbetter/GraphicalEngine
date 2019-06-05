@@ -20,7 +20,7 @@ data(
 template Vector2::Vector2(float&&, float&&);
 template Vector2::Vector2(float&, float&);
 
-Vector2 Vector2::operator+(const Vector2& rhs)
+Vector2 Vector2::operator+(const Vector2& rhs) const
 {
     Vector2 ret{
         data[0] + rhs.data[0],
@@ -30,7 +30,7 @@ Vector2 Vector2::operator+(const Vector2& rhs)
     return ret;
 }
 
-Vector2 Vector2::operator-(const Vector2& rhs)
+Vector2 Vector2::operator-(const Vector2& rhs) const
 {
     Vector2 ret{
         data[0] - rhs.data[0],
@@ -147,5 +147,15 @@ float dot(const Vector2& lhs, const Vector2& rhs)
 {
     return lhs.data[0] * rhs.data[0] +
         lhs.data[1] * rhs.data[1];
+}
+
+Vector2 cwiseProduct(const Vector2& lhs, const Vector2& rhs)
+{
+    return Vector2(
+        {
+            rhs.data[0] * lhs.data[0],
+            rhs.data[1] * lhs.data[1]
+        }
+    );
 }
 

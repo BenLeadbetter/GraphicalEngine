@@ -8,17 +8,13 @@
 
 
 Drawable::Drawable():
-    Color(std::array<float, 4>{1.0f, 1.0f, 1.0f, 1.0f}),   // default is white
     transform(Matrix4(1.0f)),
-    active(false),
     GLdata(nullptr),
     renderMode(RenderMode::LINE)
 {};
 
 Drawable::Drawable(std::shared_ptr<BufferData> dataPtr):
-    Color(std::array<float, 4>{1.0f, 1.0f, 1.0f, 1.0f}),   // default is white
     transform(Matrix4(1.0f)),
-    active(false),
     GLdata(dataPtr),
     renderMode(RenderMode::LINE)
 {};
@@ -30,8 +26,7 @@ Drawable::~Drawable()
 Drawable::Drawable(const Drawable& drawable):
 transform(Matrix4(drawable.transform))
 {
-    Color = drawable.Color;
-    active = false;         // object will be created INACTIVE
+    colorData = drawable.colorData;
     renderMode = drawable.renderMode;
     GLdata = drawable.GLdata;
 
@@ -40,8 +35,7 @@ transform(Matrix4(drawable.transform))
 Drawable& Drawable::operator=(const Drawable& rhs)
 {
     // replace the simple data
-    Color = rhs.Color;
-    active = false;         // again, will be created INACTIVE
+    colorData = rhs.colorData;
     renderMode = rhs.renderMode;
     GLdata = rhs.GLdata;
 
@@ -49,14 +43,9 @@ Drawable& Drawable::operator=(const Drawable& rhs)
 }
 
 // interface
-std::array<float, 4> Drawable::getColor() const
+ObjectColorData Drawable::getColorData() const
 {
-    return Color;
-}
-
-bool Drawable::isActive() const
-{
-    return active;
+    return colorData;
 }
 
 void Drawable::setMesh(std::shared_ptr<BufferData> DataPtr)
@@ -64,9 +53,9 @@ void Drawable::setMesh(std::shared_ptr<BufferData> DataPtr)
     GLdata = DataPtr;
 }
 
-void Drawable::setColor(const float& r, const float& g, const float& b, const float& a)
+void Drawable::setColorData(const ObjectColorData& data)
 {
-    Color = std::array<float, 4>{r, g, b, a};
+    colorData = data;
 }
 
 void Drawable::setRenderMode(RenderMode mode)
