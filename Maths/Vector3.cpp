@@ -10,17 +10,6 @@ Vector3::Vector3():
 data(std::array<float, 3>{0, 0, 0})
 {}
 
-template<typename T>
-Vector3::Vector3(T&& x, T&& y, T&& z):
-data(
-    {
-        std::forward<T>(x),
-        std::forward<T>(y),
-        std::forward<T>(z)
-    }
-)
-{}
-
 template Vector3::Vector3(float&&, float&&, float&&);
 template Vector3::Vector3(float&, float&, float&);
 

@@ -55,9 +55,9 @@ int main()
             
         drawer.setView(
             ViewData(
-                glm::vec3(5.0 * std::sin((float)glfwGetTime()), 5.0 * std::cos((float)glfwGetTime()), 3.5f),
-                glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 0.0f, 1.0f)
+                Vector3(5.0 * std::sin((float)glfwGetTime()), 5.0 * std::cos((float)glfwGetTime()), 3.5),
+                Vector3(0.0f, 0.0f, 0.0f),
+                Vector3(0.0f, 0.0f, 1.0f)
             )
         );
         drawer.updateShader();

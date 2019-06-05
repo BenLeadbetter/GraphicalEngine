@@ -13,5 +13,5 @@ uniform vec3 lightDir;
 void main()
 {
    
-   FragColor = objectColor;
+   FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }
