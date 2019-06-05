@@ -34,7 +34,7 @@ data(
 )
 {}
 
-Vector3 Vector3::operator+(const Vector3& rhs)
+Vector3 Vector3::operator+(const Vector3& rhs) const
 {
     return Vector3(
         this->x() + rhs.x(),
@@ -43,7 +43,7 @@ Vector3 Vector3::operator+(const Vector3& rhs)
         );
 }
 
-Vector3 Vector3::operator-(const Vector3& rhs)
+Vector3 Vector3::operator-(const Vector3& rhs) const
 {
     return Vector3(
         this->x() - rhs.x(),

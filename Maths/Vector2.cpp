@@ -20,7 +20,7 @@ data(
 template Vector2::Vector2(float&&, float&&);
 template Vector2::Vector2(float&, float&);
 
-Vector2 Vector2::operator+(const Vector2& rhs)
+Vector2 Vector2::operator+(const Vector2& rhs) const
 {
     Vector2 ret{
         data[0] + rhs.data[0],
@@ -30,7 +30,7 @@ Vector2 Vector2::operator+(const Vector2& rhs)
     return ret;
 }
 
-Vector2 Vector2::operator-(const Vector2& rhs)
+Vector2 Vector2::operator-(const Vector2& rhs) const
 {
     Vector2 ret{
         data[0] - rhs.data[0],

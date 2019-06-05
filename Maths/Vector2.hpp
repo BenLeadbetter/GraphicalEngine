@@ -15,8 +15,8 @@ class Vector2
         Vector2();
         template<typename T> Vector2(T&&, T&&);
 
-        Vector2 operator+(const Vector2&);
-        Vector2 operator-(const Vector2&);
+        Vector2 operator+(const Vector2&) const;
+        Vector2 operator-(const Vector2&) const;
         Vector2& operator+=(const Vector2&);
         Vector2& operator-=(const Vector2&);
         Vector2 operator*(const float&);

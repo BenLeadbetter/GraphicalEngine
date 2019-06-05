@@ -19,8 +19,8 @@ class Vector4
         template<typename T> Vector4(T&&, T&&, T&&, T&&);
         Vector4(const Vector3&);
 
-        Vector4 operator+(const Vector4& rhs);
-        Vector4 operator-(const Vector4& rhs);
+        Vector4 operator+(const Vector4& rhs) const;
+        Vector4 operator-(const Vector4& rhs) const;
         Vector4& operator +=(const Vector4& rhs);
         Vector4& operator -=(const Vector4& rhs);
         Vector4 operator*(const float&);

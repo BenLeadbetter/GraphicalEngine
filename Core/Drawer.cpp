@@ -25,8 +25,8 @@ static ProjectionData DefaultProjectionData()
 }
 
 Drawer::Drawer():
-viewChangeMatrix(glm::mat4(1.0f)),
-projectionMatirx(glm::mat4(1.0f)),
+viewChangeMatrix(Matrix4(1.0f)),
+projectionMatirx(Matrix4(1.0f)),
 shader(
     "GL/Shaders/VertexShaderSource.glsl", 
     "GL/Shaders/FragmentShaderSource.glsl"
@@ -40,12 +40,12 @@ shader(
     shader.use();
     shader.setMat4("view", viewChangeMatrix);
     shader.setMat4("proj", projectionMatirx);
-    shader.setVec3("eyePos", DefaultViewData().Eye);
+    shader.setVec3("eyePos", DefaultViewData().getEye());
     
     setLightData(
-        glm::vec3(1.0f, 0.0f, 0.0f),
-        glm::vec3(1.0f, 0.0f, 0.0f),
-        glm::vec3(1.0f, 0.0f, 0.0f)
+        Vector3(1.0f, 0.0f, 0.0f),
+        Vector3(1.0f, 0.0f, 0.0f),
+        Vector3(1.0f, 0.0f, 0.0f)
     );
 
     glCheckError();
@@ -54,42 +54,37 @@ shader(
 void Drawer::setView(const ViewData& data)
 {
     // create new view-basis
-    glm::vec3 n = glm::normalize(data.Eye - data.At);
-    glm::vec3 u = glm::normalize(glm::cross(data.Up, n));
-    glm::vec3 v = glm::cross(n, u);
+    Vector3 n = (data.getEye() - data.getAt()).unitVector();
+    Vector3 u = cross(data.getUp(), n).unitVector();
+    Vector3 v = cross(n, u).unitVector();
 
     // assemble the matrix
-    viewChangeMatrix = glm::mat4(
-        u.x, v.x, n.x, 0.0f,
-        u.y, v.y, n.y, 0.0f,
-        u.z, v.z, n.z, 0.0f,
-        -glm::dot(data.Eye, u), -glm::dot(data.Eye, v), -glm::dot(data.Eye,n), 1.0f
+    viewChangeMatrix = Matrix4(
+        u.x(), u.y(), u.z(), -dot(data.getEye(), u),
+        v.x(), v.y(), v.z(), -dot(data.getEye(), v),
+        n.x(), n.y(), n.z(), -dot(data.getEye(), n),
+        0.0f,  0.0f,  0.0f,  1.0f
     );
 
     shader.use();
-    shader.setVec3(
-        "eyePos", 
-        data.Eye.x,
-        data.Eye.y,
-        data.Eye.z
-        );
+    shader.setVec3("eyePos", data.getEye());
 }
 
 void Drawer::setProjection(const ProjectionData& data)
 {
-    projectionMatirx = glm::mat4(
-        data.Dist / data.Aspect,      
+    projectionMatirx = Matrix4(
+        data.getDist() / data.getAspect(),
         0.0f,       
         0.0f,                           
         0.0f,
         0.0f,               
-        data.Dist,       
+        data.getDist(),
         0.0f,                          
         0.0f,
         0.0f,               
         0.0f,       
-        -(data.Far + data.Near) / (data.Far - data.Near),  
-        -2 * data.Near * data.Far / (data.Far - data.Near),
+        -(data.getFar() + data.getNear()) / (data.getFar() - data.getNear()),  
+        -2 * data.getNear() * data.getFar() / (data.getFar() - data.getNear()),
         0.0f,               
         0.0f,       
         -1.0f,                          
@@ -98,15 +93,15 @@ void Drawer::setProjection(const ProjectionData& data)
 }
 
 void Drawer::setLightData(
-    glm::vec3 diffuse, 
-    glm::vec3 specular, 
-    glm::vec3 ambient
+    Vector3 diffuse, 
+    Vector3 specular, 
+    Vector3 ambient
     )
 {
     shader.use();
-    shader.setVec3("srcSpec", diffuse.x, diffuse.y, diffuse.z);
-    shader.setVec3("srcAmb", specular.x, specular.y, specular.z);
-    shader.setVec3("srcEmit", ambient.x, ambient.y, ambient.z);   
+    shader.setVec3("srcSpec", diffuse);
+    shader.setVec3("srcAmb", specular);
+    shader.setVec3("srcEmit", ambient);   
 }
 
 void Drawer::updateShader()

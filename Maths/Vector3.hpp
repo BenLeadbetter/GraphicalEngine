@@ -20,8 +20,8 @@ class Vector3
         template<typename T> Vector3(T&& x, T&& y, T&& z);
         Vector3(const Vector4&);
         
-        Vector3 operator+(const Vector3& rhs);
-        Vector3 operator-(const Vector3& rhs);
+        Vector3 operator+(const Vector3& rhs) const;
+        Vector3 operator-(const Vector3& rhs) const;
         Vector3& operator +=(const Vector3& rhs);
         Vector3& operator -=(const Vector3& rhs);
         Vector3 operator*(const float&) const;
