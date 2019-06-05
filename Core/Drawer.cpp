@@ -91,18 +91,6 @@ void Drawer::setProjection(const ProjectionData& data)
     );
 }
 
-/*
-void Drawer::setProjection(const ProjectionData& data)
-{
-    projectionMatirx = Matrix4(
-        data.getDist() / data.getAspect(),  0.0f,           0.0f,                                                                   0.0f,
-        0.0f,                               data.getDist(), 0.0f,                                                                   0.0f,
-        0.0f,                               0.0f,           -(data.getFar() + data.getNear()) / (data.getFar() - data.getNear()),  -2 * data.getNear() * data.getFar() / (data.getFar() - data.getNear()),
-        0.0f,                               0.0f,           -1.0f,                                                                  0.0f
-    );
-}
-*/
-
 void Drawer::setLightData(
     Vector3 diffuse, 
     Vector3 specular, 

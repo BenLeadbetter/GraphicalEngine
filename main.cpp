@@ -1,17 +1,9 @@
-// #define CATCH_CONFIG_MAIN
-// #include <catch.hpp>
-
 #include "Core/Window.hpp"
 #include "Core/Drawer.hpp"
 #include "Core/MeshManager.hpp"
 #include "Core/Particle.hpp"
 
-#include "Core/Stopwatch.hpp"
-
 #include <cmath>
-#include <unistd.h>
-
-#include <iostream>
 
 int main()
 {
@@ -60,6 +52,7 @@ int main()
                 Vector3(0.0f, 0.0f, 1.0f)
             )
         );
+
         drawer.updateShader();
         /*
         *   Render 
