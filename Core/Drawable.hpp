@@ -23,12 +23,35 @@ struct DrawData
     Matrix4 WorldTransform = Matrix4(1.0);
 };
 
-struct ObjectColorData
+class ObjectColorData
 {
-    Vector4 diffuse = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
-    Vector4 specular = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
-    Vector4 emissive = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
-    Vector4 ambient = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+    public:
+        ObjectColorData() {};
+        template<typename Vec, typename Sh>
+        ObjectColorData(Vec&& vec1, Vec&& vec2, Vec&& vec3, Vec&& vec4, Sh sh):
+        diffuse(std::forward<Vec>(vec1)),
+        specular(std::forward<Vec>(vec2)),
+        emissive(std::forward<Vec>(vec3)),
+        ambient(std::forward<Vec>(vec4)),
+        shininess(std::forward<Sh>(sh))
+        {};
+
+        void setDiffuse(const Vector4& vec) { diffuse = vec; }
+        void setSpecular(const Vector4& vec) { specular = vec; }
+        void setEmissive(const Vector4& vec) { emissive = vec; }
+        void setAmbient(const Vector4& vec) { ambient = vec; }
+
+        Vector4 getDiffuse() const { return diffuse; }
+        Vector4 getSpecular() const { return specular; }
+        Vector4 getEmissive() const { return emissive; }
+        Vector4 getAmbient() const { return ambient; }
+        
+    private:
+        Vector4 diffuse = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+        Vector4 specular = Vector4({0.5f, 0.5f, 0.5f, 1.0f});
+        Vector4 emissive = Vector4({0.0f, 0.0f, 0.0f, 0.0f});
+        Vector4 ambient = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+        float shininess = 1.0f;
 };
 
 class Drawable
