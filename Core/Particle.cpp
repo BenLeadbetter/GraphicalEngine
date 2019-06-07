@@ -10,7 +10,7 @@ force(Vector3(0.0f, 0.0f, 0.0f))
 {
     setColorData(
         ObjectColorData(
-            Vector4(0.6f, 0.6f, 0.6f, 1.0f),
+            Vector4(1.0f, 0.0f, 0.0f, 1.0f),
             Vector4(0.8f, 0.8f, 0.8f, 1.0f),
             Vector4(1.0f, 1.0f, 1.0f, 1.0f),
             Vector4(0.0f, 0.0f, 0.0f, 0.0f),

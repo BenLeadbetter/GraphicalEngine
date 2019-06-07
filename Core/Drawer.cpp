@@ -184,5 +184,8 @@ void Drawer::setObjectColorData(const Drawable& drawable)
 {
     shader.use();
 
-    shader.setVec4("matDiff", drawable.getColorData().diffuse);
+    shader.setVec4("matDiff", drawable.getColorData().getDiffuse());
+    shader.setVec4("matSpec", drawable.getColorData().getSpecular());
+    shader.setVec4("matAmbi", drawable.getColorData().getAmbient());
+    shader.setVec4("setEmis", drawable.getColorData().getEmissive());
 }

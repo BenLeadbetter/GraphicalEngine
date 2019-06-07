@@ -59,8 +59,8 @@ int main()
         */ 
 
         window.clear();
-        drawer.draw(testParticle);
         drawer.draw(stage);
+        drawer.draw(testParticle);
         window.swapBuffers();
     }
 
