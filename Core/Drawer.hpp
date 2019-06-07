@@ -67,6 +67,31 @@ class ProjectionData
         float Far;
 };
 
+class LightColorData
+{
+    public:
+        template<typename T>
+        LightColorData(T&& vec1, T&& vec2, T&& vec):
+        diffuse(std::forward<T>(vec1)),
+        specular(std::forward<T>(vec2)),
+        ambient(std::forward<T>(vec3))
+        {};
+
+        void setDiffuse(const Vector3& vec) { diffuse = vec; }
+        void setSpecular(const Vector3& vec) { specular = vec; }
+        void setAmbient(const Vector3& vec) { ambient = vec; }
+
+        Vector3 getDiffuse() const { return diffuse; }
+        Vector3 getSepcular() const { return specular; }
+        Vector3 getAmbient() const { return ambient; }
+        
+    private:
+        Vector3 diffuse;
+        Vector3 specular;
+        Vector3 ambient;
+
+};
+
 class Drawer
 {
     public:
