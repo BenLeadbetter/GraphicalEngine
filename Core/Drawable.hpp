@@ -36,22 +36,23 @@ class ObjectColorData
         shininess(std::forward<Sh>(sh))
         {};
 
-        void setDiffuse(const Vector4& vec) { diffuse = vec; }
-        void setSpecular(const Vector4& vec) { specular = vec; }
-        void setEmissive(const Vector4& vec) { emissive = vec; }
-        void setAmbient(const Vector4& vec) { ambient = vec; }
+        void setDiffuse(const Vector3& vec) { diffuse = vec; }
+        void setSpecular(const Vector3& vec) { specular = vec; }
+        void setEmissive(const Vector3& vec) { emissive = vec; }
+        void setAmbient(const Vector3& vec) { ambient = vec; }
 
-        Vector4 getDiffuse() const { return diffuse; }
-        Vector4 getSpecular() const { return specular; }
-        Vector4 getEmissive() const { return emissive; }
-        Vector4 getAmbient() const { return ambient; }
+        Vector3 getDiffuse() const { return diffuse; }
+        Vector3 getSpecular() const { return specular; }
+        Vector3 getEmissive() const { return emissive; }
+        Vector3 getAmbient() const { return ambient; }
         
     private:
-        Vector4 diffuse = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
-        Vector4 specular = Vector4({0.5f, 0.5f, 0.5f, 1.0f});
-        Vector4 emissive = Vector4({0.0f, 0.0f, 0.0f, 0.0f});
-        Vector4 ambient = Vector4({1.0f, 1.0f, 1.0f, 1.0f});
+        Vector3 diffuse = Vector4({1.0f, 1.0f, 1.0f});
+        Vector3 specular = Vector4({0.5f, 0.5f, 0.5f});
+        Vector3 emissive = Vector4({0.0f, 0.0f, 0.0f});
+        Vector3 ambient = Vector4({1.0f, 1.0f, 1.0f});
         float shininess = 1.0f;
+        float alpha = 1.0f;
 };
 
 class Drawable

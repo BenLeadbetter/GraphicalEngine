@@ -71,7 +71,7 @@ class LightColorData
 {
     public:
         template<typename T>
-        LightColorData(T&& vec1, T&& vec2, T&& vec):
+        LightColorData(T&& vec1, T&& vec2, T&& vec3):
         diffuse(std::forward<T>(vec1)),
         specular(std::forward<T>(vec2)),
         ambient(std::forward<T>(vec3))
