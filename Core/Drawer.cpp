@@ -41,12 +41,6 @@ shader(
     shader.setMat4("view", viewChangeMatrix);
     shader.setMat4("proj", projectionMatirx);
     shader.setVec3("eyePos", DefaultViewData().getEye());
-    
-    setLightData(
-        Vector3(1.0f, 0.0f, 0.0f),
-        Vector3(1.0f, 0.0f, 0.0f),
-        Vector3(1.0f, 0.0f, 0.0f)
-    );
 
     glCheckError();
 }
@@ -91,16 +85,9 @@ void Drawer::setProjection(const ProjectionData& data)
     );
 }
 
-void Drawer::setLightData(
-    Vector3 diffuse, 
-    Vector3 specular, 
-    Vector3 ambient
-    )
+LightData Drawer::getLightData()
 {
-    shader.use();
-    shader.setVec3("srcSpec", diffuse);
-    shader.setVec3("srcAmb", specular);
-    shader.setVec3("srcEmit", ambient);   
+    return lightData;
 }
 
 void Drawer::updateShader()
@@ -127,6 +114,7 @@ void Drawer::drawSolidPolygon(const Drawable& drawable)
     glBindVertexArray(drawable.getDrawData().VertexArrayID);
 
     setObjectColorData(drawable);
+    updateLightData();
 
     // set up for fill drawing
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -188,4 +176,16 @@ void Drawer::setObjectColorData(const Drawable& drawable)
     shader.setVec3("matSpec", drawable.getColorData().getSpecular());
     shader.setVec3("matAmbi", drawable.getColorData().getAmbient());
     shader.setVec3("setEmis", drawable.getColorData().getEmissive());
+    shader.setFloat("shininess", drawable.getColorData().getShininess());
+    //TODO shader.setFloat("alpha", drawable.getColorData().getAlpha());
+}
+
+void Drawer::updateLightData()
+{
+    shader.use();
+    shader.setVec3("srcDiff", getLightData().getDiffuse());
+    shader.setVec3("srcSpec", getLightData().getSpecular());
+    shader.setVec3("srcAmbi", getLightData().getAmbient());
+    shader.setVec3("lightDir", getLightData().getLightDir());
+
 }

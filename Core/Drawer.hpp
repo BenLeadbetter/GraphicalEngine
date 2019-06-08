@@ -67,66 +67,74 @@ class ProjectionData
         float Far;
 };
 
-class LightColorData
+class LightData
 {
     public:
+        LightData() {};
         template<typename T>
-        LightColorData(T&& vec1, T&& vec2, T&& vec3):
+        LightData(T&& vec1, T&& vec2, T&& vec3, T&& vec4):
         diffuse(std::forward<T>(vec1)),
         specular(std::forward<T>(vec2)),
-        ambient(std::forward<T>(vec3))
+        ambient(std::forward<T>(vec3)),
+        lightDir(std::forward<T>(vec4))
         {};
 
         void setDiffuse(const Vector3& vec) { diffuse = vec; }
         void setSpecular(const Vector3& vec) { specular = vec; }
         void setAmbient(const Vector3& vec) { ambient = vec; }
+        void setLightDir(const Vector3 vec) { lightDir = vec; }
 
         Vector3 getDiffuse() const { return diffuse; }
-        Vector3 getSepcular() const { return specular; }
+        Vector3 getSpecular() const { return specular; }
         Vector3 getAmbient() const { return ambient; }
+        Vector3 getLightDir() const { return lightDir; }
         
     private:
-        Vector3 diffuse;
-        Vector3 specular;
-        Vector3 ambient;
+        Vector3 diffuse = Vector3(1.0f, 0.0f, 0.0f);
+        Vector3 specular = Vector3(1.0f, 0.0f, 0.0f);
+        Vector3 ambient = Vector3(1.0f, 0.0f, 0.0f);
+        Vector3 lightDir = Vector3(1.0f, 1.0f, 1.0f);
 
 };
 
 class Drawer
 {
     public:
-
-        //
         Drawer();
-
-        //
         void setView(const ViewData&);
         void setProjection(const ProjectionData&);
         //TODO void moveAt(vector);
         //TODO void rotateEye();
         void updateShader();
-        void setLightData(Vector3, Vector3, Vector3);
-
-        //
+        template<typename T> void setLightData(T&&, T&&, T&&, T&&);
+        LightData getLightData();
         void draw(Drawable&);
 
     private:
-        
-        //
         void loadShader();
         void drawSolidPolygon(const Drawable&);
         void drawWireFramePolygon(const Drawable&);
         void setObjectColorData(const Drawable&);
+        void updateLightData();
 
-        //
         Matrix4   viewChangeMatrix;
         Matrix4   projectionMatirx;
         
-        //
         Shader      shader;
-
-        //
-        // float cameraSpeed;
+        LightData   lightData;
 };
+
+template<typename T>
+void Drawer::setLightData(T&& diffIn, T&& specIn, T&& ambiIn, T&& dirIn)
+{
+    lightData = LightData(
+        std::forward<T>(diffIn), 
+        std::forward<T>(specIn),
+        std::forward<T>(ambiIn), 
+        std::forward<T>(dirIn)
+    );
+
+    updateLightData();
+}
 
 #endif

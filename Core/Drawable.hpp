@@ -40,11 +40,15 @@ class ObjectColorData
         void setSpecular(const Vector3& vec) { specular = vec; }
         void setEmissive(const Vector3& vec) { emissive = vec; }
         void setAmbient(const Vector3& vec) { ambient = vec; }
+        void setShininess(const float& val) { shininess = val; }
+        void setAlpha(const float& val) { alpha = val; }
 
         Vector3 getDiffuse() const { return diffuse; }
         Vector3 getSpecular() const { return specular; }
         Vector3 getEmissive() const { return emissive; }
         Vector3 getAmbient() const { return ambient; }
+        float getShininess() const { return shininess; }
+        float getAlpha() const { return alpha; }
         
     private:
         Vector3 diffuse = Vector4({1.0f, 1.0f, 1.0f});
