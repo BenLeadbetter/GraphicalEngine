@@ -16,7 +16,7 @@ void main()
    vec3 view = normalize(vView);
    vec3 light = normalize(lightDir);
 
-   vec3 diff = max(dot(normal, light), 0.0) * srcDiff * matDiff;
+   vec3 diff = max(dot(normal, light), 0.0) * matDiff;
 
    vec3 refl = 2.0 * normal * dot(normal, light) - light;
    vec3 spec = pow(max(dot(refl, view), 0.0), shininess) * srcSpec * matSpec;

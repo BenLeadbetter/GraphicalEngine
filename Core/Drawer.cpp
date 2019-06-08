@@ -92,6 +92,7 @@ LightData Drawer::getLightData()
 
 void Drawer::updateShader()
 {
+
     // load uniforms to shader
     shader.setMat4("view", viewChangeMatrix);
     shader.setMat4("proj", projectionMatirx);
@@ -118,6 +119,8 @@ void Drawer::drawSolidPolygon(const Drawable& drawable)
 
     // set up for fill drawing
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_DEPTH_TEST);
+
     shader.use();
     glDrawElements(
         GL_TRIANGLES, 
@@ -125,6 +128,8 @@ void Drawer::drawSolidPolygon(const Drawable& drawable)
         GL_UNSIGNED_INT, 
         0
     );
+
+    glDisable(GL_DEPTH_TEST);
 
     glCheckError();
 }
