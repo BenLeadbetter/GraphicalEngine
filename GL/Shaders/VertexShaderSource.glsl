@@ -2,7 +2,8 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNorm;
 
-out vec3 vNormal, vView;
+flat out vec3 vNormal; 
+out vec3 vView;
 
 uniform mat4 world, view, proj;
 uniform vec3 eyePos;
