@@ -16,6 +16,7 @@ class ObjLoader
         void loadNormals();
         void loadFaceData();
 
+    private:
         ObjectData data;
         std::string file;
 };
