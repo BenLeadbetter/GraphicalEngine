@@ -9,9 +9,12 @@
 
 struct ObjectData
 {
+    using VertexData = std::array<unsigned int, 3>;
+    using FaceData = std::array<VertexData, 3>;
+
     std::vector<float> vertices;
     std::vector<float> normals;
-    std::vector<unsigned int> indices;
+    std::vector<FaceData> faceData;
 };
 
 

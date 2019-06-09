@@ -12,11 +12,9 @@ class ObjLoader
         ObjectData& getData();
 
     private:
-
-        // utility functions
         void loadVertices();
         void loadNormals();
-        void loadIndices();
+        void loadFaceData();
 
         ObjectData data;
         std::string file;
