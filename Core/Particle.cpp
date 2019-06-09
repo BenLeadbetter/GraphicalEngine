@@ -1,13 +1,23 @@
 #include "Particle.hpp"
 
-Particle::Particle(MeshManager& meshManager) : 
-Drawable(meshManager.getMesh(MeshID::SPHERE)),
+Particle::Particle(MeshManager& meshManager) :
+Drawable(meshManager.getMesh(MeshID::CUBE)),
 mass(1.0f),
 radius(1.0f),
 displacement(Vector3(0.0f, 0.0f, 0.0f)),
 velocity(Vector3(0.0f, 0.0f, 0.0f)),
 force(Vector3(0.0f, 0.0f, 0.0f))
-{}
+{
+    setColorData(
+        ObjectColorData(
+            Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+            Vector4(0.8f, 0.8f, 0.8f, 1.0f),
+            Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+            Vector4(0.0f, 0.0f, 0.0f, 0.0f),
+            5.0f
+        )
+    );
+}
 
 void Particle::setDisplaceMent(const Vector3& disp)
 {

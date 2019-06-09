@@ -47,7 +47,7 @@ int main()
             
         drawer.setView(
             ViewData(
-                Vector3(5.0 * std::sin((float)glfwGetTime()), 5.0 * std::cos((float)glfwGetTime()), 3.5),
+                Vector3((5.0f * std::sin((float)glfwGetTime())), 5.0f * std::cos((float)glfwGetTime()), 3.5f),
                 Vector3(0.0f, 0.0f, 0.0f),
                 Vector3(0.0f, 0.0f, 1.0f)
             )
@@ -59,8 +59,8 @@ int main()
         */ 
 
         window.clear();
-        drawer.draw(testParticle);
         drawer.draw(stage);
+        drawer.draw(testParticle);
         window.swapBuffers();
     }
 
