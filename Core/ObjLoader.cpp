@@ -69,29 +69,22 @@ void advanceToNextSlash(std::string::iterator& itr)
         ++itr;
 }
 
-void loadThreeFloatsIntoVector(
-    std::vector<float>& vec, 
+void appendNextVector(
+    std::vector<ObjectData::Vector>& data, 
     std::string::iterator itr
     )
 {
-    for(int i = 0; i != 3; ++i)
-    {
-        vec.push_back(nextFloat(itr));
-        advancePastNextValue(itr);
-    }
+    ObjectData::Vector vec;
+
+    vec[0] = nextFloat(itr);
+    advancePastNextValue(itr);
+    vec[1] = nextFloat(itr);
+    advancePastNextValue(itr);
+    vec[2] = nextFloat(itr);
+
+    data.push_back(vec);
 }
 
-void loadThreeIntsIntoVector(
-    std::vector<unsigned int>& vec,
-    std::string::iterator itr
-    )
-{
-    for(int i = 0; i != 3; ++i)
-    {
-        vec.push_back(nextInt(itr) - 1);
-        advanceToNextWhiteSpace(itr);
-    }
-}
 
 void loadFaceVertexDataToArray(std::array<unsigned int, 3>& arr, std::string::iterator itr)
 {
@@ -107,6 +100,8 @@ void loadFaceVertexDataToArray(std::array<unsigned int, 3>& arr, std::string::it
         arr[2] = nextInt(itr);
 }
 
+#include<iostream>
+
 void ObjLoader::loadVertices()
 {
     static std::string vertexFlag = "v ";
@@ -115,8 +110,17 @@ void ObjLoader::loadVertices()
     while(itr != file.end())
     {
         advanceToNextWhiteSpace(itr);
-        loadThreeFloatsIntoVector(data.vertices, itr);
-        itr = find(++itr, file.end(), 'v');
+        appendNextVector(data.vertices, itr);
+        itr = search(itr, file.end(), vertexFlag.begin(), vertexFlag.end());
+    }
+
+    // print to see contents
+    std::cout << "Vertices:" << std::endl;
+    for(auto itr = data.vertices.begin(); itr != data.vertices.end(); ++itr)
+    {
+        std:: cout << (*itr)[0] << ", " <<
+        (*itr)[1] << ", " <<
+        (*itr)[2] << std::endl;
     }
 }
 
@@ -128,8 +132,18 @@ void ObjLoader::loadNormals()
     while(itr != file.end())
     {
         advanceToNextWhiteSpace(itr);
-        loadThreeFloatsIntoVector(data.normals, itr);
+        appendNextVector(data.normals, itr);
         itr = search(++itr, file.end(), normalFlag.begin(), normalFlag.end());
+    }
+
+
+    // print to see contents
+    std::cout << "Normals:" << std::endl;
+    for(auto itr = data.normals.begin(); itr != data.normals.end(); ++itr)
+    {
+        std:: cout << (*itr)[0] << ", " <<
+        (*itr)[1] << ", " <<
+        (*itr)[2] << std::endl;
     }
 }
 
@@ -145,9 +159,11 @@ void ObjLoader::loadFaceData()
         for(int i = 0; i != 3; ++i)
         {
             ObjectData::VertexData currentVertexData;
+            
+            advanceToNextDigit(itr);
             loadFaceVertexDataToArray(currentVertexData, itr);
             currentFaceData[i] = currentVertexData;
-            advancePastNextValue(itr);
+            advanceToNextWhiteSpace(itr);
         }
 
         data.faceData.push_back(currentFaceData);

@@ -68,7 +68,6 @@ DrawData Drawable::getDrawData() const
     DrawData ret;
     ret.VertexArrayID = GLdata->getVertexArrayID();
     ret.VertexBufferID = GLdata->getVertexBufferID();
-    ret.ElementBufferID = GLdata->getElementBufferID();
     ret.NumberOfIndices = GLdata->getNumberOfIndices();
     ret.renderMode = renderMode;
     ret.WorldTransform = transform;

@@ -20,14 +20,14 @@ int main()
     stage.scale(8.0f); 
     
 
-
+    /*
     // test a particle
     Particle testParticle(meshManager);
     testParticle.setVelocity(Vector3(3.2f, 3.1f, -5.8f));
     testParticle.setRadius(0.4f);
     testParticle.setRenderMode(RenderMode::FILL);
     testParticle.scale(0.5f);
-    
+    */
 
     // render loop
     // -----------
@@ -60,7 +60,7 @@ int main()
 
         window.clear();
         drawer.draw(stage);
-        drawer.draw(testParticle);
+        //drawer.draw(testParticle);
         window.swapBuffers();
     }
 
