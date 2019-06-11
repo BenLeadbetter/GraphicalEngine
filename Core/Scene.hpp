@@ -17,25 +17,17 @@
 class Scene
 {
     public:
-
-        // ctor: there should only be one instance of the Scene
         Scene();
 
-        //
         void update(float dtime);
         void draw();
 
-        //
         void addActiveDrawable(const Drawable& drawable);
 
-        //
-
     private:
-        
-        //
         void removeInactiveDrawables();
 
-        // data
+    private:
         std::vector<std::shared_ptr<Drawable>>      ActiveDrawables;
 };
 

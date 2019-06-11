@@ -20,7 +20,7 @@ int main()
     stage.scale(8.0f); 
     
 
-
+    
     // test a particle
     Particle testParticle(meshManager);
     testParticle.setVelocity(Vector3(3.2f, 3.1f, -5.8f));

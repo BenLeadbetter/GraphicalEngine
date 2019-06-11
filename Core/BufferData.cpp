@@ -6,56 +6,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "../GL/GLCheckError.hpp"
-#define glCheckError() glCheckError_(__FILE__, __LINE__)
-
 void BufferData::createVertexArray()
 {
     glGenVertexArrays(1, &VertexArrayID);
     glCheckError();
 }
-
-template<typename T>
-void BufferData::createElementBuffer(T&& data)
-{
-    glBindVertexArray(VertexArrayID);
-    glGenBuffers(1, &ElementBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ElementBufferID);
-    glBufferData(
-        GL_ELEMENT_ARRAY_BUFFER,
-        sizeof(float) * data.indices.size(),
-        std::forward<T>(data).indices.data(),
-        GL_STATIC_DRAW
-    );
-
-    NumberOfIndices = data.indices.size();
-
-    glCheckError();
-}
-
-template void BufferData::createElementBuffer(ObjectData&&);
-template void BufferData::createElementBuffer(ObjectData&);
-
-template<typename T>
-void BufferData::createVertexBuffer(T&& data)
-{
-    auto vertexData = createVertexNormalVector(data.vertices, data.normals);
-
-    glBindVertexArray(VertexArrayID);
-    glGenBuffers(1, &VertexBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
-    glBufferData(
-        GL_ARRAY_BUFFER, 
-        sizeof(float) * 2 * data.vertices.size(), 
-        vertexData.data(),
-        GL_STATIC_DRAW
-        );
-    
-    glCheckError();
-}
-
-template void BufferData::createVertexBuffer(ObjectData&& data);
-template void BufferData::createVertexBuffer(ObjectData& data);
 
 void BufferData::enablePositionAttribPointer()
 {
@@ -92,7 +47,6 @@ void BufferData::enableNormalAttribPointer()
 void BufferData::releaseAllBuffers()
 {
     glDeleteBuffers(1, &VertexBufferID);
-    glDeleteBuffers(1, &ElementBufferID);
 
     glCheckError();
 }
@@ -103,19 +57,6 @@ void BufferData::deleteVertexArray()
 
     glCheckError();
 }
-
-template<typename T>
-BufferData::BufferData(T&& objectData)
-{
-    createVertexArray();
-    createVertexBuffer(objectData);
-    createElementBuffer(std::forward<ObjectData>(objectData));
-    enablePositionAttribPointer();
-    enableNormalAttribPointer();
-}
-
-template BufferData::BufferData(ObjectData&);
-template BufferData::BufferData(ObjectData&&);
 
 BufferData::~BufferData()
 {
@@ -133,38 +74,30 @@ unsigned int BufferData::getVertexBufferID() const
     return VertexBufferID;
 }
 
-unsigned int BufferData::getElementBufferID() const
+unsigned int BufferData::getNumberOfVertices() const
 {
-    return ElementBufferID;
-}
-
-unsigned int BufferData::getNumberOfIndices() const
-{
-    return NumberOfIndices;
+    return NumberOfVertices;
 }
 
 
-std::vector<float> createVertexNormalVector(
-    std::vector<float> verts, 
-    std::vector<float> norms
-    )
+void BUFFER_DATA_appendVertexData(
+    const ObjectData::VertexData& vertexData, 
+    const ObjectData& objectData, 
+    std::vector<float>& data)
 {
-    /**
-     *  Structure of VAO is
-     *  vx, vy, vz, nx, ny, nz
-    */
+    data.push_back(objectData.vertices[vertexData[0] - 1][0]);
+    data.push_back(objectData.vertices[vertexData[0] - 1][1]);
+    data.push_back(objectData.vertices[vertexData[0] - 1][2]);
+    data.push_back(objectData.normals[vertexData[2] - 1][0]);
+    data.push_back(objectData.normals[vertexData[2] - 1][1]);
+    data.push_back(objectData.normals[vertexData[2]  -1][2]);
+}
 
-    std::vector<float> ret;
-    
-    for(std::vector<float>::size_type i = 0; i != verts.size(); i = i + 3)
-    {
-        ret.push_back(verts[i]);
-        ret.push_back(verts[i + 1]);
-        ret.push_back(verts[i + 2]);
-        ret.push_back(norms[i]);
-        ret.push_back(norms[i + 1]);
-        ret.push_back(norms[i + 2]);
-    }
-
-    return ret;
+void BUFFER_DATA_appendFaceData(
+    const ObjectData::FaceData& faceData, 
+    const ObjectData& objectData,
+    std::vector<float>& data)
+{
+    for(int i = 0; i != 3; ++i)
+        BUFFER_DATA_appendVertexData(faceData[i], objectData, data);
 }

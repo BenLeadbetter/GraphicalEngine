@@ -1,8 +1,10 @@
 #include "ObjLoader.h"
+#include "ObjectData.hpp"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <cctype>
+#include <array>
 
 bool isFloatChar(const char ch)
 {
@@ -55,39 +57,63 @@ void advanceToNextWhiteSpace(std::string::iterator& itr)
         ++itr;
 }
 
-void loadThreeFloatsIntoVector(
-    std::vector<float>& vec, 
-    std::string::iterator itr
-    )
+void advanceToNextDigit(std::string::iterator& itr)
 {
-    for(int i = 0; i != 3; ++i)
-    {
-        vec.push_back(nextFloat(itr));
-        advancePastNextValue(itr);
-    }
+    while(!std::isdigit(*itr))
+        ++itr;
 }
 
-void loadThreeIntsIntoVector(
-    std::vector<unsigned int>& vec,
+void advanceToNextSlash(std::string::iterator& itr)
+{
+    ++itr;
+    
+    while(*itr != '/')
+        ++itr;
+}
+
+void appendNextVector(
+    std::vector<ObjectData::Vector>& data, 
     std::string::iterator itr
     )
 {
-    for(int i = 0; i != 3; ++i)
-    {
-        vec.push_back(nextInt(itr) - 1);
-        advanceToNextWhiteSpace(itr);
-    }
+    ObjectData::Vector vec;
+
+    vec[0] = nextFloat(itr);
+    advancePastNextValue(itr);
+    vec[1] = nextFloat(itr);
+    advancePastNextValue(itr);
+    vec[2] = nextFloat(itr);
+
+    data.push_back(vec);
 }
+
+
+void loadFaceVertexDataToArray(std::array<unsigned int, 3>& arr, std::string::iterator itr)
+{
+    advanceToNextDigit(itr);
+    arr[0] = nextInt(itr);
+    
+    advanceToNextSlash(itr);
+    if(std::isdigit(*(itr + 1)))
+        arr[1] = nextInt(itr);
+    
+    advanceToNextSlash(itr);
+    if(std::isdigit(*(itr + 1)))
+        arr[2] = nextInt(itr);
+}
+
+#include<iostream>
 
 void ObjLoader::loadVertices()
 {
-    auto itr = find(file.begin(), file.end(), 'v');
+    static std::string vertexFlag = "v ";
+    auto itr = search(file.begin(), file.end(), vertexFlag.begin(), vertexFlag.end());
 
     while(itr != file.end())
     {
         advanceToNextWhiteSpace(itr);
-        loadThreeFloatsIntoVector(data.vertices, itr);
-        itr = find(++itr, file.end(), 'v');
+        appendNextVector(data.vertices, itr);
+        itr = search(itr, file.end(), vertexFlag.begin(), vertexFlag.end());
     }
 }
 
@@ -99,24 +125,36 @@ void ObjLoader::loadNormals()
     while(itr != file.end())
     {
         advanceToNextWhiteSpace(itr);
-        loadThreeFloatsIntoVector(data.normals, itr);
+        appendNextVector(data.normals, itr);
         itr = search(++itr, file.end(), normalFlag.begin(), normalFlag.end());
     }
 }
 
-void ObjLoader::loadIndices()
+void ObjLoader::loadFaceData()
 {
     static std::string faceFlag = "f ";
     auto itr = search(file.begin(), file.end(), faceFlag.begin(), faceFlag.end());
 
     while(itr != file.end())
     {
-        advanceToNextWhiteSpace(itr);
-        loadThreeIntsIntoVector(data.indices, itr);
-        itr = search(++itr, file.end(), faceFlag.begin(), faceFlag.end());
-    }
+        ObjectData::FaceData currentFaceData;
 
+        for(int i = 0; i != 3; ++i)
+        {
+            ObjectData::VertexData currentVertexData;
+            
+            advanceToNextDigit(itr);
+            loadFaceVertexDataToArray(currentVertexData, itr);
+            currentFaceData[i] = currentVertexData;
+            advanceToNextWhiteSpace(itr);
+        }
+
+        data.faceData.push_back(currentFaceData);
+
+        itr = search(itr, file.end(), faceFlag.begin(), faceFlag.end());
+    }
 }
+
 
 bool ObjLoader::loadFile(const std::string& filename)
 {
@@ -141,7 +179,7 @@ ObjLoader::ObjLoader(const std::string filename)
     loadFile(filename);
     loadVertices();
     loadNormals();
-    loadIndices();
+    loadFaceData();
 }
 
 ObjectData& ObjLoader::getData()

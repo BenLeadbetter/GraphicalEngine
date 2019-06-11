@@ -17,8 +17,7 @@ struct DrawData
 {
     unsigned int VertexArrayID;
     unsigned int VertexBufferID;
-    unsigned int ElementBufferID;
-    unsigned int NumberOfIndices;
+    unsigned int NumberOfVertices;
     RenderMode renderMode;
     Matrix4 WorldTransform = Matrix4(1.0);
 };
@@ -89,7 +88,7 @@ class Drawable
         //
         ObjectColorData colorData;
         Matrix4 transform;
-        std::shared_ptr<BufferData> GLdata;
+        std::shared_ptr<BufferData> bufferData;
         RenderMode renderMode;
 };
 
