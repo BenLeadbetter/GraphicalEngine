@@ -115,15 +115,6 @@ void ObjLoader::loadVertices()
         appendNextVector(data.vertices, itr);
         itr = search(itr, file.end(), vertexFlag.begin(), vertexFlag.end());
     }
-
-    // print to see contents
-    std::cout << "Vertices:" << std::endl;
-    for(auto itr = data.vertices.begin(); itr != data.vertices.end(); ++itr)
-    {
-        std:: cout << (*itr)[0] << ", " <<
-        (*itr)[1] << ", " <<
-        (*itr)[2] << std::endl;
-    }
 }
 
 void ObjLoader::loadNormals()
@@ -136,16 +127,6 @@ void ObjLoader::loadNormals()
         advanceToNextWhiteSpace(itr);
         appendNextVector(data.normals, itr);
         itr = search(++itr, file.end(), normalFlag.begin(), normalFlag.end());
-    }
-
-
-    // print to see contents
-    std::cout << "Normals:" << std::endl;
-    for(auto itr = data.normals.begin(); itr != data.normals.end(); ++itr)
-    {
-        std:: cout << (*itr)[0] << ", " <<
-        (*itr)[1] << ", " <<
-        (*itr)[2] << std::endl;
     }
 }
 
@@ -171,20 +152,6 @@ void ObjLoader::loadFaceData()
         data.faceData.push_back(currentFaceData);
 
         itr = search(itr, file.end(), faceFlag.begin(), faceFlag.end());
-    }
-
-    // print to see contents
-    std::cout << "faceData contains:" << std::endl;
-    for(auto itr = data.faceData.begin(); itr != data.faceData.end(); ++itr)
-    {
-        for(int i = 0; i != 3; ++i)
-        {  
-            std::cout << (*itr)[i][0] << "/" <<
-            (*itr)[i][1] << "/" <<
-            (*itr)[i][2] << "\t";        
-        }
-
-        std::cout << std::endl;
     }
 }
 

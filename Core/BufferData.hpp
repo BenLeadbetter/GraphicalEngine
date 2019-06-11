@@ -68,21 +68,6 @@ std::vector<float> BufferData::vertexArrayData(T&& objectData)
         )
         BUFFER_DATA_appendFaceData(*itr, objectData, data);
 
-    //print to see contents
-    std::cout << "Buffer data" << std::endl;
-    unsigned int rowCount = 0;
-    for(auto itr = data.begin(); itr != data.end(); ++itr)
-    {
-        if(rowCount == 6)
-        {
-            std::cout << std::endl;
-            rowCount = 0;
-        }
-
-        std::cout << *itr << ", ";
-        ++rowCount;
-    }
-
     return data;
 }
 
@@ -100,9 +85,6 @@ void BufferData::createVertexBuffer(T&& objData)
         );
 
     NumberOfVertices = objData.faceData.size() * 3;
-    
-    std::cout << "Number of Vertices in the buffer:" << std::endl;
-    std::cout << NumberOfVertices << std::endl;
 
     glCheckError();
 }

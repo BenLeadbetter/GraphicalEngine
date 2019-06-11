@@ -125,7 +125,7 @@ void Drawer::drawSolidPolygon(const Drawable& drawable)
     glDrawArrays(
         GL_TRIANGLES, 
         0, 
-        32
+        drawable.getDrawData().NumberOfVertices
     );
 
     glDisable(GL_DEPTH_TEST);
