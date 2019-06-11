@@ -16,11 +16,11 @@ class BufferData
 
         unsigned int getVertexArrayID() const;
         unsigned int getVertexBufferID() const;
-        unsigned int getNumberOfIndices() const;
+        unsigned int getNumberOfVertices() const;
 
     private:
         void createVertexArray();
-        template<typename T> float* vertexArrayData(T&& objectData);
+        template<typename T> std::vector<float> vertexArrayData(T&& objectData);
         template<typename T> void createVertexBuffer(T&& objectData);
         void enablePositionAttribPointer();
         void enableNormalAttribPointer();
@@ -30,7 +30,7 @@ class BufferData
     private:
         unsigned int    VertexArrayID;
         unsigned int    VertexBufferID;
-        unsigned int    NumberOfIndices;
+        unsigned int    NumberOfVertices;
 };
 
 std::vector<float> createVertexNormalVector(std::vector<float>, std::vector<float>);
@@ -54,8 +54,10 @@ void BUFFER_DATA_appendFaceData(
     const ObjectData& objectData,
     std::vector<float>& data);
 
+#include <iostream>
+
 template<typename T> 
-float* BufferData::vertexArrayData(T&& objectData)
+std::vector<float> BufferData::vertexArrayData(T&& objectData)
 {
     std::vector<float> data;
 
@@ -66,22 +68,42 @@ float* BufferData::vertexArrayData(T&& objectData)
         )
         BUFFER_DATA_appendFaceData(*itr, objectData, data);
 
-    return data.data();
+    //print to see contents
+    std::cout << "Buffer data" << std::endl;
+    unsigned int rowCount = 0;
+    for(auto itr = data.begin(); itr != data.end(); ++itr)
+    {
+        if(rowCount == 6)
+        {
+            std::cout << std::endl;
+            rowCount = 0;
+        }
+
+        std::cout << *itr << ", ";
+        ++rowCount;
+    }
+
+    return data;
 }
 
 template<typename T>
 void BufferData::createVertexBuffer(T&& objData)
-{
+{   
     glBindVertexArray(VertexArrayID);
     glGenBuffers(1, &VertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
     glBufferData(
         GL_ARRAY_BUFFER, 
-        sizeof(float) * 2 * objData.vertices.size(), 
-        vertexArrayData(objData),
+        sizeof(float) * 2 * objData.faceData.size() * 3 * 3, 
+        vertexArrayData(std::forward<T>(objData)).data(),
         GL_STATIC_DRAW
         );
+
+    NumberOfVertices = objData.faceData.size() * 3;
     
+    std::cout << "Number of Vertices in the buffer:" << std::endl;
+    std::cout << NumberOfVertices << std::endl;
+
     glCheckError();
 }
 

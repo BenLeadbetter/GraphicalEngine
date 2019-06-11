@@ -74,9 +74,9 @@ unsigned int BufferData::getVertexBufferID() const
     return VertexBufferID;
 }
 
-unsigned int BufferData::getNumberOfIndices() const
+unsigned int BufferData::getNumberOfVertices() const
 {
-    return NumberOfIndices;
+    return NumberOfVertices;
 }
 
 

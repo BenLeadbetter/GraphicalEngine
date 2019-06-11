@@ -65,6 +65,8 @@ void advanceToNextDigit(std::string::iterator& itr)
 
 void advanceToNextSlash(std::string::iterator& itr)
 {
+    ++itr;
+    
     while(*itr != '/')
         ++itr;
 }
@@ -169,6 +171,20 @@ void ObjLoader::loadFaceData()
         data.faceData.push_back(currentFaceData);
 
         itr = search(itr, file.end(), faceFlag.begin(), faceFlag.end());
+    }
+
+    // print to see contents
+    std::cout << "faceData contains:" << std::endl;
+    for(auto itr = data.faceData.begin(); itr != data.faceData.end(); ++itr)
+    {
+        for(int i = 0; i != 3; ++i)
+        {  
+            std::cout << (*itr)[i][0] << "/" <<
+            (*itr)[i][1] << "/" <<
+            (*itr)[i][2] << "\t";        
+        }
+
+        std::cout << std::endl;
     }
 }
 

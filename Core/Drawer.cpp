@@ -122,11 +122,10 @@ void Drawer::drawSolidPolygon(const Drawable& drawable)
     glEnable(GL_DEPTH_TEST);
 
     shader.use();
-    glDrawElements(
+    glDrawArrays(
         GL_TRIANGLES, 
-        drawable.getDrawData().NumberOfIndices, 
-        GL_UNSIGNED_INT, 
-        0
+        0, 
+        32
     );
 
     glDisable(GL_DEPTH_TEST);
@@ -153,11 +152,10 @@ void Drawer::drawWireFramePolygon(const Drawable& drawable)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glLineWidth(2.5f);
     shader.use();
-    glDrawElements(
+    glDrawArrays(
         GL_TRIANGLES, 
-        drawable.getDrawData().NumberOfIndices, 
-        GL_UNSIGNED_INT, 
-        0
+        0, 
+        drawable.getDrawData().NumberOfVertices
     );
 
     glCheckError();

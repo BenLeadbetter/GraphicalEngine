@@ -16,8 +16,8 @@ int main()
 
     
     Drawable stage(meshManager.getMesh(MeshID::CUBE));
-    stage.setRenderMode(RenderMode::LINE);
-    stage.scale(8.0f); 
+    stage.setRenderMode(RenderMode::FILL);
+    stage.scale(2.0f); 
     
 
     /*

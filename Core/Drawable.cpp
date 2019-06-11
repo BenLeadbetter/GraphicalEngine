@@ -9,13 +9,13 @@
 
 Drawable::Drawable():
     transform(Matrix4(1.0f)),
-    GLdata(nullptr),
+    bufferData(nullptr),
     renderMode(RenderMode::LINE)
 {};
 
 Drawable::Drawable(std::shared_ptr<BufferData> dataPtr):
     transform(Matrix4(1.0f)),
-    GLdata(dataPtr),
+    bufferData(dataPtr),
     renderMode(RenderMode::LINE)
 {};
 
@@ -28,7 +28,7 @@ transform(Matrix4(drawable.transform))
 {
     colorData = drawable.colorData;
     renderMode = drawable.renderMode;
-    GLdata = drawable.GLdata;
+    bufferData = drawable.bufferData;
 
 }
 
@@ -37,7 +37,7 @@ Drawable& Drawable::operator=(const Drawable& rhs)
     // replace the simple data
     colorData = rhs.colorData;
     renderMode = rhs.renderMode;
-    GLdata = rhs.GLdata;
+    bufferData = rhs.bufferData;
 
     return *this;
 }
@@ -50,7 +50,7 @@ ObjectColorData Drawable::getColorData() const
 
 void Drawable::setMesh(std::shared_ptr<BufferData> DataPtr)
 {
-    GLdata = DataPtr;
+    bufferData = DataPtr;
 }
 
 void Drawable::setColorData(const ObjectColorData& data)
@@ -66,9 +66,9 @@ void Drawable::setRenderMode(RenderMode mode)
 DrawData Drawable::getDrawData() const
 {
     DrawData ret;
-    ret.VertexArrayID = GLdata->getVertexArrayID();
-    ret.VertexBufferID = GLdata->getVertexBufferID();
-    ret.NumberOfIndices = GLdata->getNumberOfIndices();
+    ret.VertexArrayID = bufferData->getVertexArrayID();
+    ret.VertexBufferID = bufferData->getVertexBufferID();
+    ret.NumberOfVertices = bufferData->getNumberOfVertices();
     ret.renderMode = renderMode;
     ret.WorldTransform = transform;
 
