@@ -1,6 +1,6 @@
 #version 330 core
 
-flat in vec3 vNormal; 
+in vec3 vNormal; 
 in vec3 vView;
 
 out vec4 FragColor;
@@ -24,5 +24,5 @@ void main()
 
    vec3 ambi = srcAmbi * matAmbi;
    
-   FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+   FragColor = vec4(diff, 1.0);
 }
