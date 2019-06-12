@@ -77,8 +77,8 @@ void Particle::applyImpulse(const Vector3& imp)
 
 void Particle::update(float time)
 {
-    displacement += velocity * time / 1000;
-    velocity += (force / mass) * time / 1000;
+    displacement += velocity * time;
+    velocity += (force / mass) * time;
     clearForce();
 
     this->setPosition(displacement);

@@ -3,7 +3,12 @@
 #include "Core/MeshManager.hpp"
 #include "Core/Particle.hpp"
 
+#include "Core/Stopwatch.hpp"
+
 #include <cmath>
+
+
+long unsigned int tickCount = 0;
 
 int main()
 {
@@ -14,6 +19,8 @@ int main()
     Drawer drawer;
     MeshManager meshManager;
 
+    // test out a stopwatch
+    Stopwatch stopwatch;
     
     Drawable stage(meshManager.getMesh(MeshID::CUBE));
     stage.setRenderMode(RenderMode::LINE);
@@ -43,7 +50,10 @@ int main()
         /*
          *  Update
          */ 
-        
+        double dtSeconds = (double)(stopwatch.elapsed_time<int, std::chrono::microseconds>()) / 1000000;
+        stopwatch.restart();
+
+        testParticle.update(dtSeconds);
             
         drawer.setView(
             ViewData(
