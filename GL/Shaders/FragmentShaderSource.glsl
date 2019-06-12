@@ -24,5 +24,5 @@ void main()
 
    vec3 ambi = srcAmbi * matAmbi;
    
-   FragColor = vec4(diff, 1.0);
+   FragColor = vec4(diff + spec + ambi, 1.0);
 }
