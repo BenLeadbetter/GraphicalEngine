@@ -90,9 +90,9 @@ class LightData
         Vector3 getLightDir() const { return lightDir; }
         
     private:
-        Vector3 diffuse = Vector3(1.0f, 0.0f, 0.0f);
-        Vector3 specular = Vector3(1.0f, 0.0f, 0.0f);
-        Vector3 ambient = Vector3(1.0f, 0.0f, 0.0f);
+        Vector3 diffuse = Vector3(1.0f, 1.0f, 1.0f);
+        Vector3 specular = Vector3(1.0f, 1.0f, 1.0f);
+        Vector3 ambient = Vector3(0.5f, 0.5f, 0.5f);
         Vector3 lightDir = Vector3(1.0f, 1.0f, 1.0f);
 
 };
