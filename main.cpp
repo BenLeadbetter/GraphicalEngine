@@ -30,7 +30,7 @@ int main()
     
     // test a particle
     Particle testParticle(meshManager);
-    testParticle.setVelocity(Vector3(3.2f, 3.1f, -5.8f));
+    testParticle.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
     testParticle.setRadius(0.4f);
     testParticle.setRenderMode(RenderMode::FILL);
     testParticle.scale(0.5f);
