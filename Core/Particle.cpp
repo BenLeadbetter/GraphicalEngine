@@ -22,6 +22,7 @@ force(Vector3(0.0f, 0.0f, 0.0f))
 void Particle::setDisplaceMent(const Vector3& disp)
 {
     displacement = disp;
+    setPosition(displacement);
 }
 
 void Particle::setVelocity(const Vector3& velo)
@@ -38,6 +39,19 @@ void Particle::setRadius(const float& rad)
 {
     radius = rad;
     this->scale(rad / getRadius());
+}
+
+void Particle::setColor(const Vector3& color)
+{
+    setColorData(
+        ObjectColorData(
+            Vector3(color),
+            Vector3(1.0f, 1.0f, 1.0f),
+            Vector3(0.0f, 0.0f, 0.0f),
+            Vector3(0.4f, 0.4f, 0.4f),
+            15
+        )
+    );
 }
 
 Vector3 Particle::getDisplacement() const

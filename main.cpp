@@ -4,6 +4,7 @@
 #include "Core/Particle.hpp"
 #include "Core/CollisionBox.hpp"
 #include "Core/Stopwatch.hpp"
+#include "Core/Scene.hpp"
 
 #include <cmath>
 
@@ -22,17 +23,37 @@ int main()
     // test out a stopwatch
     Stopwatch stopwatch;
     
-    CollisionBox collisionBox(meshManager);
+    std::unique_ptr<CollisionBox> pCollisionBox = std::make_unique<CollisionBox>(meshManager);
     
 
     
-    // test a particle
-    Particle testParticle(meshManager);
-    testParticle.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
-    testParticle.setRadius(0.4f);
-    testParticle.setRenderMode(RenderMode::FILL);
-    testParticle.scale(0.5f);
+    // test some particles
     
+    Particle particle1(meshManager);
+    particle1.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
+    particle1.setRenderMode(RenderMode::FILL);
+    particle1.scale(0.5f);
+
+    Particle particle2(meshManager);
+    particle2.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
+    particle2.setRenderMode(RenderMode::FILL);
+    particle2.scale(0.5f);
+    particle2.setDisplaceMent(Vector3(-3.0f, 3.0f, 0.0f));
+    particle2.setColor(Vector3(0.0f, 0.0f, 1.0f));
+    
+    Particle particle3(meshManager);
+    particle3.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
+    particle3.setRenderMode(RenderMode::FILL);
+    particle3.scale(0.5f);
+    particle3.setDisplaceMent(Vector3(2.0f, -2.0f, -2.0f));
+    particle3.setColor(Vector3(0.0f, 1.0f, 0.0f));
+    
+
+    Scene scene;
+    scene.addDrawable(std::move(pCollisionBox));
+    scene.addDrawable(std::make_unique<Particle>(std::move(particle1)));
+    scene.addDrawable(std::make_unique<Particle>(std::move(particle2)));
+    scene.addDrawable(std::make_unique<Particle>(std::move(particle3)));
 
     // render loop
     // -----------
@@ -51,7 +72,6 @@ int main()
         double dtSeconds = (double)(stopwatch.elapsed_time<int, std::chrono::microseconds>()) / 1000000;
         stopwatch.restart();
 
-        testParticle.update(dtSeconds);
             
         drawer.setView(
             ViewData(
@@ -67,8 +87,7 @@ int main()
         */ 
 
         window.clear();
-        drawer.draw(collisionBox);
-        drawer.draw(testParticle);
+        scene.draw(drawer);
         window.swapBuffers();
     }
 

@@ -1,34 +1,23 @@
 #ifndef GUARD_SCENE_HPP
 #define GUARD_SCENE_HPP
 
-/*
-*   Header file for the Scene class
-*
-*   The scene will hold pointers to all the active objects
-*   and will be responsible for updating and drawing 
-*   each of them.
-*
-*/
-
 #include <vector>
 #include <memory>
 #include "Drawable.hpp"
+#include "Drawer.hpp"
 
 class Scene
 {
+    protected:
+        using vecSize = std::vector<std::unique_ptr<Drawable>>::size_type;
+
     public:
-        Scene();
-
-        void update(float dtime);
-        void draw();
-
-        void addActiveDrawable(const Drawable& drawable);
+        Scene() {};
+        void draw(Drawer&) const;
+        void addDrawable(std::unique_ptr<Drawable>&& drawable);
 
     private:
-        void removeInactiveDrawables();
-
-    private:
-        std::vector<std::shared_ptr<Drawable>>      ActiveDrawables;
+        std::vector<std::unique_ptr<Drawable>> drawables;
 };
 
 #endif
