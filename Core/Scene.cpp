@@ -25,6 +25,7 @@ void ParticleCollider::update(const float& dtime)
     detectWallCollisions();
     detectParticleCollisions();
 
+
     for(auto itr = particles.begin(); itr != particles.end(); ++itr)
         (*itr)->update(dtime);
 }
@@ -49,7 +50,31 @@ void ParticleCollider::detectWallCollisions()
     }
 }
 
+void collide_particle(Particle& particle1, const Particle& particle2)
+{
+    Vector3 centre2_to_centre1 = particle1.getDisplacement() - particle2.getDisplacement();
+    float distance_from_particle2 = centre2_to_centre1.magnitude();
+    
+    if(distance_from_particle2 < 1.0f)
+    {
+        centre2_to_centre1.normalise();
+        Vector3 velocity1 = particle1.getVelocity();
+
+        velocity1 = velocity1 - 2 * dot(velocity1, centre2_to_centre1) * centre2_to_centre1;
+        particle1.setVelocity(velocity1);
+    }
+}
+
 void ParticleCollider::detectParticleCollisions()
 {
-
+    for(vecSize i = 0; i != particles.size(); ++i)
+    {
+        for(vecSize j = 0; j != particles.size(); ++j)
+        {
+            if(i != j)
+            {
+                collide_particle(*particles[i], *particles[j]);
+            }
+        }
+    }
 }
