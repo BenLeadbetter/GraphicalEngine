@@ -1,7 +1,7 @@
 #include "Particle.hpp"
 
 Particle::Particle(MeshManager& meshManager) :
-Drawable(meshManager.getMesh(MeshID::SPANNER)),
+Drawable(meshManager.getMesh(MeshID::SPHERE)),
 mass(1.0f),
 radius(1.0f),
 displacement(Vector3(0.0f, 0.0f, 0.0f)),
