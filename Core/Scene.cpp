@@ -37,13 +37,15 @@ void ParticleCollider::addParticle(std::shared_ptr<Particle> pDrawable)
 
 void ParticleCollider::detectWallCollisions()
 {
-    for(vecSize i = 1; i != particles.size(); ++i)
+    for(vecSize i = 0; i != particles.size(); ++i)
     {
         Vector3 collisionNormal = pCollisionBox->collisionDir(*particles[i]);
         Vector3 particleVelocity = particles[i]->getVelocity();
-        
+
         if(dot(particleVelocity, collisionNormal) < 0)
-            particles[i]->setVelocity(particleVelocity + 2 * dot(particleVelocity, collisionNormal) * collisionNormal);
+        {
+            particles[i]->setVelocity(particleVelocity - 2 * dot(particleVelocity, collisionNormal) * collisionNormal);
+        }
     }
 }
 

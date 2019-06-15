@@ -22,38 +22,32 @@ int main()
 
     // test out a stopwatch
     Stopwatch stopwatch;
-    
-    std::shared_ptr<CollisionBox> pCollisionBox = std::make_shared<CollisionBox>(meshManager);
-    
 
-    
     // test some particles
     
     Particle particle1(meshManager);
-    particle1.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
+    particle1.setVelocity(Vector3(3.2f, 0.1f, 1.8f));
     particle1.setRenderMode(RenderMode::FILL);
     particle1.scale(0.5f);
 
     Particle particle2(meshManager);
-    particle2.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
+    particle2.setVelocity(Vector3(1.2f, -2.1f, -0.8f));
     particle2.setRenderMode(RenderMode::FILL);
     particle2.scale(0.5f);
     particle2.setDisplaceMent(Vector3(-3.0f, 3.0f, 0.0f));
     particle2.setColor(Vector3(0.0f, 0.0f, 1.0f));
     
     Particle particle3(meshManager);
-    particle3.setVelocity(Vector3(0.2f, 0.1f, -0.8f));
+    particle3.setVelocity(Vector3(1.2f, 2.1f, -0.8f));
     particle3.setRenderMode(RenderMode::FILL);
     particle3.scale(0.5f);
-    particle3.setDisplaceMent(Vector3(2.0f, -2.0f, -2.0f));
+    particle3.setDisplaceMent(Vector3(1.0f, -2.0f, -2.0f));
     particle3.setColor(Vector3(0.0f, 1.0f, 0.0f));
     
-
-    Scene scene;
-    scene.addDrawable(std::move(pCollisionBox));
-    scene.addDrawable(std::make_shared<Particle>(std::move(particle1)));
-    scene.addDrawable(std::make_shared<Particle>(std::move(particle2)));
-    scene.addDrawable(std::make_shared<Particle>(std::move(particle3)));
+    ParticleCollider particleCollider(meshManager);
+    particleCollider.addParticle(std::make_shared<Particle>(particle1));
+    particleCollider.addParticle(std::make_shared<Particle>(particle2));
+    particleCollider.addParticle(std::make_shared<Particle>(particle3));
 
     // render loop
     // -----------
@@ -75,19 +69,21 @@ int main()
             
         drawer.setView(
             ViewData(
-                Vector3((8.0f * std::sin((float)glfwGetTime())), 8.0f * std::cos((float)glfwGetTime()), 4.5f),
+                Vector3((8.0f * std::sin(0.1f * (float)glfwGetTime())), 8.0f * std::cos(0.1f * (float)glfwGetTime()), 4.5f),
                 Vector3(0.0f, 0.0f, 0.0f),
                 Vector3(0.0f, 0.0f, 1.0f)
             )
         );
 
         drawer.updateShader();
+        particleCollider.update(dtSeconds);
+
         /*
         *   Render 
         */ 
 
         window.clear();
-        scene.draw(drawer);
+        particleCollider.draw(drawer);
         window.swapBuffers();
     }
 

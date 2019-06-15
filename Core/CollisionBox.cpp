@@ -26,7 +26,10 @@ Vector3 CollisionBox::collisionDir(const Particle& particle) const
         particleDisplacement.z() - std::clamp(particleDisplacement.z(), boundaries.zMin, boundaries.zMax)
     );
 
-    return ret.unitVector();
+    if(ret.squareMagnitude() != 0)
+        ret.normalise();
+
+    return -1.0f * ret;
 }
 
 float CollisionBox::collisionOverlap(const Particle& particle) const
