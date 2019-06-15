@@ -13,7 +13,8 @@
             "command": "",
             "args": [
                 "g++",
-                "-Wall", 
+                "-Wall",
+                "-std=c++17", 
                 "-g",
                 "${fileDirname}/GL/*.c", 
                 "${fileDirname}/GL/*.cpp",

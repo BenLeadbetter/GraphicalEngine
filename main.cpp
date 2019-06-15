@@ -2,7 +2,7 @@
 #include "Core/Drawer.hpp"
 #include "Core/MeshManager.hpp"
 #include "Core/Particle.hpp"
-
+#include "Core/CollisionBox.hpp"
 #include "Core/Stopwatch.hpp"
 
 #include <cmath>
@@ -22,9 +22,7 @@ int main()
     // test out a stopwatch
     Stopwatch stopwatch;
     
-    Drawable stage(meshManager.getMesh(MeshID::CUBE));
-    stage.setRenderMode(RenderMode::LINE);
-    stage.scale(8.0f); 
+    CollisionBox collisionBox(meshManager);
     
 
     
@@ -69,7 +67,7 @@ int main()
         */ 
 
         window.clear();
-        drawer.draw(stage);
+        drawer.draw(collisionBox);
         drawer.draw(testParticle);
         window.swapBuffers();
     }
