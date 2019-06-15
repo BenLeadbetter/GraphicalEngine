@@ -114,8 +114,3 @@ void Window::clear() const
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-
-float Window::elapsedTimeInMilliseconds() const
-{
-    return stopwatch.elapsed_time<float, std::chrono::milliseconds>();
-}

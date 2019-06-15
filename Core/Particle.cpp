@@ -1,7 +1,7 @@
 #include "Particle.hpp"
 
 Particle::Particle(MeshManager& meshManager) :
-Drawable(meshManager.getMesh(MeshID::SPANNER)),
+Drawable(meshManager.getMesh(MeshID::SPHERE)),
 mass(1.0f),
 radius(1.0f),
 displacement(Vector3(0.0f, 0.0f, 0.0f)),
@@ -77,8 +77,8 @@ void Particle::applyImpulse(const Vector3& imp)
 
 void Particle::update(float time)
 {
-    displacement += velocity * time / 1000;
-    velocity += (force / mass) * time / 1000;
+    displacement += velocity * time;
+    velocity += (force / mass) * time;
     clearForce();
 
     this->setPosition(displacement);
