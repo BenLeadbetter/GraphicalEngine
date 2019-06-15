@@ -24,7 +24,7 @@ class Particle : public Drawable
 
         void applyForce(const Vector3&);
         void applyImpulse(const Vector3&);
-        void update(float time);
+        void update(const float&);
 
     private:
 

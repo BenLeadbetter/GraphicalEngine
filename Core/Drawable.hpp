@@ -73,10 +73,7 @@ class Drawable
         void displace(const Vector3&);
         Vector3 getPosition() const;
         void scale(const float &);
-        bool isDynamic() const { return dynamic; }
-    
-    protected:
-        bool dynamic;
+        virtual void update(const float&) {};
 
     private:
         ObjectColorData colorData;

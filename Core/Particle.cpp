@@ -8,15 +8,7 @@ displacement(Vector3(0.0f, 0.0f, 0.0f)),
 velocity(Vector3(0.0f, 0.0f, 0.0f)),
 force(Vector3(0.0f, 0.0f, 0.0f))
 {
-    setColorData(
-        ObjectColorData(
-            Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-            Vector4(0.8f, 0.8f, 0.8f, 1.0f),
-            Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-            Vector4(0.4f, 0.0f, 0.0f, 1.0f),
-            5.0f
-        )
-    );
+    setColor(Vector3(1.0f, 0.0f, 0.0f));
 }
 
 void Particle::setDisplaceMent(const Vector3& disp)
@@ -89,10 +81,10 @@ void Particle::applyImpulse(const Vector3& imp)
     velocity += imp / mass;
 }
 
-void Particle::update(float time)
+void Particle::update(const float& dtime)
 {
-    displacement += velocity * time;
-    velocity += (force / mass) * time;
+    displacement += velocity * dtime;
+    velocity += (force / mass) * dtime;
     clearForce();
 
     this->setPosition(displacement);

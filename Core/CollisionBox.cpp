@@ -16,13 +16,28 @@ CollisionBox::CollisionBox(MeshManager& meshManager):
     boundaries.zMax = BOX_WIDTH / 2;
 }
 
-Vector3 CollisionBox::collide(const Particle& particle) const
+Vector3 CollisionBox::collisionDir(const Particle& particle) const
 {
     Vector3 particleDisplacement = particle.getDisplacement();
     
-    return Vector3(
+    Vector3 ret(
         particleDisplacement.x() - std::clamp(particleDisplacement.x(), boundaries.xMin, boundaries.xMax),
         particleDisplacement.y() - std::clamp(particleDisplacement.y(), boundaries.yMin, boundaries.yMax),
         particleDisplacement.z() - std::clamp(particleDisplacement.z(), boundaries.zMin, boundaries.zMax)
     );
+
+    return ret.unitVector();
+}
+
+float CollisionBox::collisionOverlap(const Particle& particle) const
+{
+    Vector3 particleDisplacement = particle.getDisplacement();
+    
+    Vector3 ret(
+        particleDisplacement.x() - std::clamp(particleDisplacement.x(), boundaries.xMin, boundaries.xMax),
+        particleDisplacement.y() - std::clamp(particleDisplacement.y(), boundaries.yMin, boundaries.yMax),
+        particleDisplacement.z() - std::clamp(particleDisplacement.z(), boundaries.zMin, boundaries.zMax)
+    );
+
+    return ret.magnitude();
 }

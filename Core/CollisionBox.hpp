@@ -9,11 +9,12 @@ class CollisionBox : public Drawable
 {
     public:
         CollisionBox(MeshManager&);
-        Vector3 collide(const Particle&) const;
+        Vector3 collisionDir(const Particle&) const;
+        float collisionOverlap(const Particle&) const;
     
     private:
         const float BOX_WIDTH = 8.0f;
-        
+
         struct boxBoundaries{
             float xMin;
             float xMax;

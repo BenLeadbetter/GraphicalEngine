@@ -23,7 +23,7 @@ int main()
     // test out a stopwatch
     Stopwatch stopwatch;
     
-    std::unique_ptr<CollisionBox> pCollisionBox = std::make_unique<CollisionBox>(meshManager);
+    std::shared_ptr<CollisionBox> pCollisionBox = std::make_shared<CollisionBox>(meshManager);
     
 
     
@@ -51,9 +51,9 @@ int main()
 
     Scene scene;
     scene.addDrawable(std::move(pCollisionBox));
-    scene.addDrawable(std::make_unique<Particle>(std::move(particle1)));
-    scene.addDrawable(std::make_unique<Particle>(std::move(particle2)));
-    scene.addDrawable(std::make_unique<Particle>(std::move(particle3)));
+    scene.addDrawable(std::make_shared<Particle>(std::move(particle1)));
+    scene.addDrawable(std::make_shared<Particle>(std::move(particle2)));
+    scene.addDrawable(std::make_shared<Particle>(std::move(particle3)));
 
     // render loop
     // -----------
@@ -75,7 +75,7 @@ int main()
             
         drawer.setView(
             ViewData(
-                Vector3((5.0f * std::sin((float)glfwGetTime())), 5.0f * std::cos((float)glfwGetTime()), 3.5f),
+                Vector3((8.0f * std::sin((float)glfwGetTime())), 8.0f * std::cos((float)glfwGetTime()), 4.5f),
                 Vector3(0.0f, 0.0f, 0.0f),
                 Vector3(0.0f, 0.0f, 1.0f)
             )
