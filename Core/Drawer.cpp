@@ -141,6 +141,7 @@ void Drawer::drawWireFramePolygon(const Drawable& drawable)
     // antialiasing
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // set colour to shader
@@ -166,6 +167,7 @@ void Drawer::drawWireFramePolygon(const Drawable& drawable)
     glLineWidth(1.0f);
     glDisable(GL_BLEND);
     glDisable(GL_LINE_SMOOTH);
+    glDisable(GL_DEPTH_TEST);
 
     glCheckError();
 }
