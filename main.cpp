@@ -1,17 +1,17 @@
 #include "Core/Window.hpp"
 #include "Core/Drawer.hpp"
-#include "Core/MeshManager.hpp"
-#include "Core/Particle.hpp"
-#include "Core/CollisionBox.hpp"
 #include "Core/Stopwatch.hpp"
 #include "Core/Scene.hpp"
+#include "Core/BufferData.hpp"
+#include "Core/ObjLoader.h"
 
-int main()
+int main(int argc, char** argv)
 {
     Window window;
     Drawer drawer;
     MeshManager meshManager;
     Stopwatch stopwatch;
+    Scene scene;
     drawer.setView(
         ViewData(
             Vector3(8.0f, 5.0f, 5.5f),
@@ -19,25 +19,14 @@ int main()
             Vector3(0.0f, 0.0f, 1.0f)
         )
     );
-    
-    Particle particle1(meshManager);
-    particle1.setVelocity(Vector3(0.2f, 6.1f, 1.8f));
 
-    Particle particle2(meshManager);
-    particle2.setVelocity(Vector3(1.2f, -2.1f, -0.8f));
-    particle2.setDisplaceMent(Vector3(-3.0f, 3.0f, 0.0f));
-    particle2.setColor(Vector3(0.0f, 0.0f, 1.0f));
-    
-    Particle particle3(meshManager);
-    particle3.setVelocity(Vector3(-1.2f, 2.1f, -0.8f));
-    particle3.setDisplaceMent(Vector3(1.0f, -2.0f, -2.0f));
-    particle3.setColor(Vector3(0.0f, 1.0f, 0.0f));
-    
-    
-    ParticleCollider particleCollider(meshManager);
-    particleCollider.addParticle(std::make_shared<Particle>(particle1));
-    particleCollider.addParticle(std::make_shared<Particle>(particle2));
-    particleCollider.addParticle(std::make_shared<Particle>(particle3));
+    if(argc > 1)
+    {   
+        ObjLoader loader(argv[1]);
+        std::shared_ptr<BufferData> pObject = std::make_shared<BufferData>(loader.getData());
+        std::shared_ptr<Drawable> pDrawable = std::make_shared<Drawable>(pObject);
+        scene.addDrawable(pDrawable);
+    }
 
     // render loop
     // -----------
@@ -57,13 +46,12 @@ int main()
          *  Update
          */ 
         drawer.updateShader();
-        particleCollider.update(dtSeconds);
 
         /*
         *   Render 
         */ 
         window.clear();
-        particleCollider.draw(drawer);
+        scene.draw(drawer);
         window.swapBuffers();
     }
 

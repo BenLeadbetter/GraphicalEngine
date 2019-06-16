@@ -102,8 +102,6 @@ void loadFaceVertexDataToArray(std::array<unsigned int, 3>& arr, std::string::it
         arr[2] = nextInt(itr);
 }
 
-#include<iostream>
-
 void ObjLoader::loadVertices()
 {
     static std::string vertexFlag = "v ";
@@ -161,7 +159,7 @@ bool ObjLoader::loadFile(const std::string& filename)
     std::ifstream fstream(filename);
     if(!fstream.is_open())
     {
-        std::cout << "Could not open file: " << filename << std::endl;
+        std::cerr << "Could not open file: " << filename << std::endl;
         return false;
     }
     
