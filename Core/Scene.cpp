@@ -52,16 +52,16 @@ void ParticleCollider::detectWallCollisions()
 
 void collide_particle(Particle& particle1, const Particle& particle2)
 {
-    Vector3 centre2_to_centre1 = particle1.getDisplacement() - particle2.getDisplacement();
-    float distance_from_particle2 = centre2_to_centre1.magnitude();
+    Vector3 centre1_to_centre2 = particle2.getDisplacement() - particle1.getDisplacement();
+    float distance_from_particle2 = centre1_to_centre2.magnitude();
     
     if(distance_from_particle2 < 1.0f)
     {
-        centre2_to_centre1.normalise();
-        Vector3 velocity1 = particle1.getVelocity();
+        float overlapDistance = 2.0f - distance_from_particle2;
+        static float stiffnessScaleFactor = 15;
+        Vector3 collisionForce = -1.0f * overlapDistance * stiffnessScaleFactor * centre1_to_centre2.unitVector();
 
-        velocity1 = velocity1 - 2 * dot(velocity1, centre2_to_centre1) * centre2_to_centre1;
-        particle1.setVelocity(velocity1);
+        particle1.applyForce(collisionForce);
     }
 }
 

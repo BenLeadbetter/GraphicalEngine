@@ -6,8 +6,6 @@
 #include "Core/Stopwatch.hpp"
 #include "Core/Scene.hpp"
 
-#include <cmath>
-
 
 long unsigned int tickCount = 0;
 
@@ -26,7 +24,7 @@ int main()
     );
     
     Particle particle1(meshManager);
-    particle1.setVelocity(Vector3(3.2f, 0.1f, 1.8f));
+    particle1.setVelocity(Vector3(3.2f, 6.1f, 1.8f));
     particle1.setRenderMode(RenderMode::FILL);
     particle1.scale(0.5f);
 
@@ -38,7 +36,7 @@ int main()
     particle2.setColor(Vector3(0.0f, 0.0f, 1.0f));
     
     Particle particle3(meshManager);
-    particle3.setVelocity(Vector3(1.2f, 2.1f, -0.8f));
+    particle3.setVelocity(Vector3(-1.2f, 2.1f, -0.8f));
     particle3.setRenderMode(RenderMode::FILL);
     particle3.scale(0.5f);
     particle3.setDisplaceMent(Vector3(1.0f, -2.0f, -2.0f));
@@ -52,7 +50,7 @@ int main()
     particle4.setColor(Vector3(1.0f, 1.0f, 0.0f));
 
     Particle particle5(meshManager);
-    particle5.setVelocity(Vector3(1.2f, 2.1f, -0.8f));
+    particle5.setVelocity(Vector3(-3.2f, 2.1f, -0.8f));
     particle5.setRenderMode(RenderMode::FILL);
     particle5.scale(0.5f);
     particle5.setDisplaceMent(Vector3(1.8f, -2.9f, 2.0f));
@@ -104,7 +102,6 @@ int main()
         /*
         *   Render 
         */ 
-
         window.clear();
         particleCollider.draw(drawer);
         window.swapBuffers();
