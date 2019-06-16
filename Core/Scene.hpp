@@ -1,34 +1,41 @@
 #ifndef GUARD_SCENE_HPP
 #define GUARD_SCENE_HPP
 
-/*
-*   Header file for the Scene class
-*
-*   The scene will hold pointers to all the active objects
-*   and will be responsible for updating and drawing 
-*   each of them.
-*
-*/
-
 #include <vector>
 #include <memory>
 #include "Drawable.hpp"
+#include "Drawer.hpp"
+#include "MeshManager.hpp"
+#include "CollisionBox.hpp"
 
 class Scene
 {
+    protected:
+        using vecSize = std::vector<std::shared_ptr<Drawable>>::size_type;
+
     public:
-        Scene();
+        Scene() {};
+        void draw(Drawer&) const;
+        void addDrawable(std::shared_ptr<Drawable>); 
 
-        void update(float dtime);
-        void draw();
+    protected:
+        std::vector<std::shared_ptr<Drawable>> drawables;
+};
 
-        void addActiveDrawable(const Drawable& drawable);
-
+class ParticleCollider : public Scene
+{
+    public:
+        ParticleCollider(MeshManager&);
+        void update(const float&);
+        void addParticle(std::shared_ptr<Particle>);
+    
     private:
-        void removeInactiveDrawables();
-
+        void detectWallCollisions();
+        void detectParticleCollisions();
+    
     private:
-        std::vector<std::shared_ptr<Drawable>>      ActiveDrawables;
+        std::shared_ptr<CollisionBox> pCollisionBox;
+        std::vector<std::shared_ptr<Particle>> particles;
 };
 
 #endif

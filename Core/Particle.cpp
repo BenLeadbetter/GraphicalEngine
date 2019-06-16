@@ -1,4 +1,5 @@
 #include "Particle.hpp"
+#define DAMPING 0.9995
 
 Particle::Particle(MeshManager& meshManager) :
 Drawable(meshManager.getMesh(MeshID::SPHERE)),
@@ -8,20 +9,14 @@ displacement(Vector3(0.0f, 0.0f, 0.0f)),
 velocity(Vector3(0.0f, 0.0f, 0.0f)),
 force(Vector3(0.0f, 0.0f, 0.0f))
 {
-    setColorData(
-        ObjectColorData(
-            Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-            Vector4(0.8f, 0.8f, 0.8f, 1.0f),
-            Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-            Vector4(0.4f, 0.0f, 0.0f, 1.0f),
-            5.0f
-        )
-    );
+    setColor(Vector3(1.0f, 0.0f, 0.0f));
+    setRenderMode(RenderMode::FILL);
 }
 
 void Particle::setDisplaceMent(const Vector3& disp)
 {
     displacement = disp;
+    setPosition(displacement);
 }
 
 void Particle::setVelocity(const Vector3& velo)
@@ -38,6 +33,19 @@ void Particle::setRadius(const float& rad)
 {
     radius = rad;
     this->scale(rad / getRadius());
+}
+
+void Particle::setColor(const Vector3& color)
+{
+    setColorData(
+        ObjectColorData(
+            Vector3(color),
+            Vector3(1.0f, 1.0f, 1.0f),
+            Vector3(0.0f, 0.0f, 0.0f),
+            Vector3(0.4f, 0.4f, 0.4f),
+            15
+        )
+    );
 }
 
 Vector3 Particle::getDisplacement() const
@@ -75,10 +83,11 @@ void Particle::applyImpulse(const Vector3& imp)
     velocity += imp / mass;
 }
 
-void Particle::update(float time)
+void Particle::update(const float& dtime)
 {
-    displacement += velocity * time;
-    velocity += (force / mass) * time;
+    displacement += velocity * dtime;
+    velocity += (force / mass) * dtime;
+    velocity = DAMPING * velocity;
     clearForce();
 
     this->setPosition(displacement);

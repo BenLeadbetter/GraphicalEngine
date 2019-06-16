@@ -14,6 +14,8 @@ class Particle : public Drawable
         void setVelocity(const Vector3&);
         void setMass(const float&);
         void setRadius(const float&);
+        void setColor(const Vector3&);
+
         Vector3 getDisplacement() const;
         Vector3 getVelocity() const;
         Vector3 getForce() const;
@@ -22,8 +24,7 @@ class Particle : public Drawable
 
         void applyForce(const Vector3&);
         void applyImpulse(const Vector3&);
-
-        void update(float time);
+        void update(const float&);
 
     private:
 

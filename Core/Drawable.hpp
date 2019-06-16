@@ -1,10 +1,6 @@
 #ifndef GUARD_DRAWABLE_HPP
 #define GUARD_DRAWABLE_HPP
 
-/*
-*   Header file for the Drawable class
-*/
-
 #include "BufferData.hpp"
 #include "../Maths/Matrix4.hpp"
 #include "../Maths/Vector4.hpp"
@@ -61,31 +57,25 @@ class ObjectColorData
 class Drawable
 {
     public:
-        
-        //
         Drawable();
         Drawable(std::shared_ptr<BufferData> dataPtr);
         virtual ~Drawable();
         Drawable(const Drawable&);
         Drawable& operator=(const Drawable&);
         
-        //
         ObjectColorData getColorData() const;
         DrawData getDrawData() const;
         void setMesh(std::shared_ptr<BufferData> dataPtr);
         void setColorData(const ObjectColorData&);
         void setRenderMode(RenderMode mode);
 
-
-        // orientation
         void setPosition(const Vector3&);
         void displace(const Vector3&);
         Vector3 getPosition() const;
         void scale(const float &);
+        virtual void update(const float&) {};
 
     private:
-
-        //
         ObjectColorData colorData;
         Matrix4 transform;
         std::shared_ptr<BufferData> bufferData;

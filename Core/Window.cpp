@@ -99,6 +99,27 @@ void Window::processInput() const
         glfwSetWindowShouldClose(window, true);
 }
 
+void Window::processCameraInput(Drawer& drawer, const float& dtime) const
+{
+    unsigned int key;
+
+    key = glfwGetKey(window, GLFW_KEY_LEFT);
+    if(key == GLFW_PRESS)
+        drawer.getViewData().rotateEyePanLeft(dtime);
+
+    key = glfwGetKey(window, GLFW_KEY_RIGHT);
+    if(key == GLFW_PRESS)
+        drawer.getViewData().rotateEyePanRight(dtime);
+    
+    key = glfwGetKey(window, GLFW_KEY_UP);
+    if(key == GLFW_PRESS)
+        drawer.getViewData().rotateEyePitchUp(dtime);
+
+    key = glfwGetKey(window, GLFW_KEY_DOWN);
+    if(key == GLFW_PRESS)
+        drawer.getViewData().rotateEyePitchDown(dtime);
+}
+
 void Window::swapBuffers() const
 {
     glfwSwapBuffers(window);
