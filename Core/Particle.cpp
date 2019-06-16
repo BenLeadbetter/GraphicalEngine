@@ -1,5 +1,5 @@
 #include "Particle.hpp"
-#define DAMPING 0.995
+#define DAMPING 0.9999
 
 Particle::Particle(MeshManager& meshManager) :
 Drawable(meshManager.getMesh(MeshID::SMOOTH_SPHERE)),
@@ -42,7 +42,7 @@ void Particle::setColor(const Vector3& color)
             Vector3(color),
             Vector3(1.0f, 1.0f, 1.0f),
             Vector3(0.0f, 0.0f, 0.0f),
-            Vector3(0.4f, 0.4f, 0.4f),
+            Vector3(color),
             15
         )
     );

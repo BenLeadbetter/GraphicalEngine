@@ -15,11 +15,7 @@ enum class MeshID {
 class Mesh
 {
     public:
-
-        // factory method
         static std::unique_ptr<Mesh> createMesh(MeshID);
-        
-        //
         virtual ObjectData createObjectData() = 0;
 };
 

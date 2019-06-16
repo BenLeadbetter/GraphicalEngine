@@ -5,13 +5,15 @@
 #include "Core/CollisionBox.hpp"
 #include "Core/Stopwatch.hpp"
 #include "Core/Scene.hpp"
+#include <cstdlib>
 
-int main()
+int main(int argc, char** argv)
 {
     Window window;
     Drawer drawer;
     MeshManager meshManager;
     Stopwatch stopwatch;
+    ParticleCollider particleCollider(meshManager);
     drawer.setView(
         ViewData(
             Vector3(8.0f, 5.0f, 5.5f),
@@ -19,25 +21,23 @@ int main()
             Vector3(0.0f, 0.0f, 1.0f)
         )
     );
-    
-    Particle particle1(meshManager);
-    particle1.setVelocity(Vector3(0.2f, 6.1f, 1.8f));
 
-    Particle particle2(meshManager);
-    particle2.setVelocity(Vector3(1.2f, -2.1f, -0.8f));
-    particle2.setDisplaceMent(Vector3(-3.0f, 3.0f, 0.0f));
-    particle2.setColor(Vector3(0.0f, 0.0f, 1.0f));
+    unsigned int nParticles;
+    if(argc > 1)
+        nParticles = std::stoi(argv[1]);
+    else
+        nParticles = 3;    
     
-    Particle particle3(meshManager);
-    particle3.setVelocity(Vector3(-1.2f, 2.1f, -0.8f));
-    particle3.setDisplaceMent(Vector3(1.0f, -2.0f, -2.0f));
-    particle3.setColor(Vector3(0.0f, 1.0f, 0.0f));
-    
-    
-    ParticleCollider particleCollider(meshManager);
-    particleCollider.addParticle(std::make_shared<Particle>(particle1));
-    particleCollider.addParticle(std::make_shared<Particle>(particle2));
-    particleCollider.addParticle(std::make_shared<Particle>(particle3));
+    for(unsigned int i = 0; i != nParticles; ++i)
+    {
+        std::srand(i*stopwatch.elapsed_time<int, std::chrono::milliseconds>());
+        Particle newParticle(meshManager);
+        newParticle.setVelocity(Vector3((float)(rand() % 8 - 4), (float)(2*rand() % 8 - 4), (float)(3*rand() % 8 - 4)));
+        newParticle.setDisplaceMent(Vector3((float)((4*rand()) % 25 - 12.5f) / 10.0f, (float)((5*rand()) % 25 - 12.5f) / 10.0f, (float)((6*rand()) % 25 - 12.5f) / 10.0f));
+        newParticle.setColor(Vector3((float)(7*rand() % 100) / 100.0f, (float)(8*rand() % 100) / 100.0f, (float)(9*rand() & 100) / 100.0f));
+
+        particleCollider.addParticle(std::make_shared<Particle>(newParticle));
+    }
 
     // render loop
     // -----------

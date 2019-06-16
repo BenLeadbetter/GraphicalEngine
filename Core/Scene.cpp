@@ -25,7 +25,7 @@ void ParticleCollider::update(const float& dtime)
 {
     detectWallCollisions();
     detectParticleCollisions();
-    applyGravitationalForces();
+    //applyGravitationalForces();
 
     for(auto itr = particles.begin(); itr != particles.end(); ++itr)
         (*itr)->update(dtime);
