@@ -27,6 +27,10 @@ std::unique_ptr<Mesh> Mesh::createMesh(MeshID meshID)
             ret = std::unique_ptr<Mesh>(new Sphere);
             break;
         
+        case MeshID::SMOOTH_SPHERE:
+            ret = std::unique_ptr<Mesh>(new SmoothSphere);
+            break;
+        
         case MeshID::ICOSAHEDRON:
             ret = std::unique_ptr<Mesh>(new Icosahedron);
             break;
@@ -44,6 +48,10 @@ ObjectData Sphere::createObjectData()
     return getMeshData("MeshFiles/Sphere.obj");
 }
 
+ObjectData SmoothSphere::createObjectData()
+{
+    return getMeshData("MeshFiles/Smooth_Sphere.obj");
+}
 
 ObjectData Cube::createObjectData()
 {
