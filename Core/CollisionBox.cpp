@@ -8,12 +8,12 @@ CollisionBox::CollisionBox(MeshManager& meshManager):
     setRenderMode(RenderMode::LINE);
     scale(BOX_WIDTH);
 
-    boundaries.xMin = - BOX_WIDTH / 2;
-    boundaries.xMax = BOX_WIDTH / 2;
-    boundaries.yMin = - BOX_WIDTH / 2;
-    boundaries.yMax = BOX_WIDTH / 2;
-    boundaries.zMin = - BOX_WIDTH / 2;
-    boundaries.zMax = BOX_WIDTH / 2;
+    boundaries.xMin = - (BOX_WIDTH / 2 - 1.0f);
+    boundaries.xMax = (BOX_WIDTH / 2 - 1.0f);
+    boundaries.yMin = - (BOX_WIDTH / 2 - 1.0f);
+    boundaries.yMax = (BOX_WIDTH / 2 - 1.0f);
+    boundaries.zMin = - (BOX_WIDTH / 2 - 1.0f);
+    boundaries.zMax = (BOX_WIDTH / 2 - 1.0f);
 }
 
 Vector3 CollisionBox::collisionDir(const Particle& particle) const
