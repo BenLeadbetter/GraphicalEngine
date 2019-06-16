@@ -14,7 +14,7 @@ int main(int argc, char** argv)
     Scene scene;
     drawer.setView(
         ViewData(
-            Vector3(8.0f, 5.0f, 5.5f),
+            Vector3(0.0f, 5.0f, 5.5f),
             Vector3(0.0f, 0.0f, 0.0f),
             Vector3(0.0f, 0.0f, 1.0f)
         )

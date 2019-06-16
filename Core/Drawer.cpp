@@ -31,8 +31,6 @@ void ViewData::rotateEyePanRight(const float& dtime)
     Eye = rotationAboutUp * Eye;
 }
 
-#include <iostream>
-
 void ViewData::rotateEyePitchUp(const float& dtime)
 {
     float dAngle = CAMERA_SPEEED * dtime;
@@ -71,9 +69,16 @@ void ViewData::rotateEyePitchDown(const float& dtime)
     Eye = rotationAboutAxis * Eye;
 }
 
-void ViewData::zoom(const float& dt)
+void ProjectionData::zoomOut(const float& dt)
 {
+    Dist -= CAMERA_SPEEED * dt * 4.0f;
+    if(Dist < 0)
+        Dist = 0;
+}
 
+void ProjectionData::zoomIn(const float& dt)
+{
+    Dist += CAMERA_SPEEED * dt * 4.0f;
 }
 
 Drawer::Drawer():

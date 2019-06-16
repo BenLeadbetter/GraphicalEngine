@@ -37,8 +37,6 @@ class ViewData
         void rotateEyePanRight(const float&);
         void rotateEyePitchUp(const float&);
         void rotateEyePitchDown(const float&);
-        void zoom(const float&);
-
 
     private:
         Vector3 Eye;
@@ -67,12 +65,17 @@ class ProjectionData
         float getAspect() const { return Aspect; }
         float getNear() const { return Near; }
         float getFar() const { return Far; }
+
+        void zoomOut(const float&);
+        void zoomIn(const float&);
         
     private:
         float Dist;
         float Aspect;
         float Near;
         float Far;
+
+        static constexpr float CAMERA_SPEEED = 0.6f;
 };
 
 class LightData

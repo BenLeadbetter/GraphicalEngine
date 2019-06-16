@@ -118,6 +118,14 @@ void Window::processCameraInput(Drawer& drawer, const float& dtime) const
     key = glfwGetKey(window, GLFW_KEY_DOWN);
     if(key == GLFW_PRESS)
         drawer.getViewData().rotateEyePitchDown(dtime);
+
+    key = glfwGetKey(window, GLFW_KEY_MINUS);
+    if(key == GLFW_PRESS)
+        drawer.getProjectionData().zoomOut(dtime);
+
+    key = glfwGetKey(window, GLFW_KEY_EQUAL);
+    if(key == GLFW_PRESS)
+        drawer.getProjectionData().zoomIn(dtime);
 }
 
 void Window::swapBuffers() const
