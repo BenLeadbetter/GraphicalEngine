@@ -1,6 +1,5 @@
 #include "Particle.hpp"
-#define DAMPING 0.95
-#define VELO_DAMPING 0.999
+#define DAMPING 0.9995
 
 Particle::Particle(MeshManager& meshManager) :
 Drawable(meshManager.getMesh(MeshID::SPHERE)),
@@ -11,6 +10,7 @@ velocity(Vector3(0.0f, 0.0f, 0.0f)),
 force(Vector3(0.0f, 0.0f, 0.0f))
 {
     setColor(Vector3(1.0f, 0.0f, 0.0f));
+    setRenderMode(RenderMode::FILL);
 }
 
 void Particle::setDisplaceMent(const Vector3& disp)
@@ -85,8 +85,9 @@ void Particle::applyImpulse(const Vector3& imp)
 
 void Particle::update(const float& dtime)
 {
-    displacement += velocity * dtime * VELO_DAMPING;
-    velocity += (force / mass) * dtime * DAMPING;
+    displacement += velocity * dtime;
+    velocity += (force / mass) * dtime;
+    velocity = DAMPING * velocity;
     clearForce();
 
     this->setPosition(displacement);

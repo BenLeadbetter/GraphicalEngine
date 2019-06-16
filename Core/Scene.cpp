@@ -55,10 +55,10 @@ void collide_particle(Particle& particle1, const Particle& particle2)
     Vector3 centre1_to_centre2 = particle2.getDisplacement() - particle1.getDisplacement();
     float distance_from_particle2 = centre1_to_centre2.magnitude();
     
-    if(distance_from_particle2 < 1.0f)
+    if(distance_from_particle2 < 2.0f)
     {
         float overlapDistance = 2.0f - distance_from_particle2;
-        static float stiffnessScaleFactor = 15;
+        static float stiffnessScaleFactor = 45;
         Vector3 collisionForce = -1.0f * overlapDistance * stiffnessScaleFactor * centre1_to_centre2.unitVector();
 
         particle1.applyForce(collisionForce);
