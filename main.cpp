@@ -6,9 +6,6 @@
 #include "Core/Stopwatch.hpp"
 #include "Core/Scene.hpp"
 
-
-long unsigned int tickCount = 0;
-
 int main()
 {
     Window window;
@@ -24,7 +21,7 @@ int main()
     );
     
     Particle particle1(meshManager);
-    particle1.setVelocity(Vector3(3.2f, 6.1f, 1.8f));
+    particle1.setVelocity(Vector3(0.2f, 6.1f, 1.8f));
 
     Particle particle2(meshManager);
     particle2.setVelocity(Vector3(1.2f, -2.1f, -0.8f));
@@ -35,35 +32,12 @@ int main()
     particle3.setVelocity(Vector3(-1.2f, 2.1f, -0.8f));
     particle3.setDisplaceMent(Vector3(1.0f, -2.0f, -2.0f));
     particle3.setColor(Vector3(0.0f, 1.0f, 0.0f));
-
-    Particle particle4(meshManager);
-    particle4.setVelocity(Vector3(1.2f, 2.1f, -0.8f));
-    particle4.setDisplaceMent(Vector3(-1.0f, -2.5f, -2.0f));
-    particle4.setColor(Vector3(1.0f, 1.0f, 0.0f));
-
-    Particle particle5(meshManager);
-    particle5.setVelocity(Vector3(-3.2f, 2.1f, -0.8f));
-    particle5.setDisplaceMent(Vector3(1.8f, -2.9f, 2.0f));
-    particle5.setColor(Vector3(0.0f, 1.0f, 1.0f));
-
-    Particle particle6(meshManager);
-    particle6.setVelocity(Vector3(0.2f, 1.1f, -3.8f));
-    particle6.setDisplaceMent(Vector3(2.0f, -1.0f, -2.5f));
-    particle6.setColor(Vector3(1.0f, 0.0f, 1.0f));
-
-    Particle particle7(meshManager);
-    particle7.setVelocity(Vector3(1.2f, 2.1f, -0.8f));
-    particle7.setDisplaceMent(Vector3(-1.8f, -2.1f, -2.9f));
-    particle7.setColor(Vector3(0.8f, 0.8f, 0.6f));
+    
     
     ParticleCollider particleCollider(meshManager);
     particleCollider.addParticle(std::make_shared<Particle>(particle1));
     particleCollider.addParticle(std::make_shared<Particle>(particle2));
     particleCollider.addParticle(std::make_shared<Particle>(particle3));
-    particleCollider.addParticle(std::make_shared<Particle>(particle4));
-    particleCollider.addParticle(std::make_shared<Particle>(particle5));
-    particleCollider.addParticle(std::make_shared<Particle>(particle6));
-    particleCollider.addParticle(std::make_shared<Particle>(particle7));
 
     // render loop
     // -----------

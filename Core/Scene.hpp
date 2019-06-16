@@ -32,6 +32,7 @@ class ParticleCollider : public Scene
     private:
         void detectWallCollisions();
         void detectParticleCollisions();
+        void applyGravitationalForces();
     
     private:
         std::shared_ptr<CollisionBox> pCollisionBox;

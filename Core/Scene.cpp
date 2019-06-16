@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#define GRAVITATIONAL_CONST 100.0
 
 void Scene::draw(Drawer& drawer) const
 {
@@ -24,7 +25,7 @@ void ParticleCollider::update(const float& dtime)
 {
     detectWallCollisions();
     detectParticleCollisions();
-
+    applyGravitationalForces();
 
     for(auto itr = particles.begin(); itr != particles.end(); ++itr)
         (*itr)->update(dtime);
@@ -74,6 +75,29 @@ void ParticleCollider::detectParticleCollisions()
             if(i != j)
             {
                 collide_particle(*particles[i], *particles[j]);
+            }
+        }
+    }
+}
+
+void apply_gravity(Particle& particle1, const Particle& particle2)
+{
+    Vector3 centre1_to_centre2 = particle2.getDisplacement() - particle1.getDisplacement();
+    float square_distance = centre1_to_centre2.squareMagnitude();
+    centre1_to_centre2.normalise();
+    Vector3 graviationalForce = (GRAVITATIONAL_CONST * particle1.getMass() * particle2.getMass() / square_distance) * centre1_to_centre2;
+    particle1.applyForce(graviationalForce);
+}
+
+void ParticleCollider::applyGravitationalForces()
+{
+    for(vecSize i = 0; i != particles.size(); ++i)
+    {
+        for(vecSize j = 0; j != particles.size(); ++j)
+        {
+            if(i != j)
+            {
+                apply_gravity(*particles[i], *particles[j]);
             }
         }
     }

@@ -1,5 +1,5 @@
 #include "Particle.hpp"
-#define DAMPING 0.99947
+#define DAMPING 0.995
 
 Particle::Particle(MeshManager& meshManager) :
 Drawable(meshManager.getMesh(MeshID::SMOOTH_SPHERE)),
