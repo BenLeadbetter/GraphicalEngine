@@ -1,7 +1,3 @@
-/**
- *  Source file for the BufferData class header
-*/
-
 #include "BufferData.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
