@@ -17,6 +17,7 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include "Drawable.hpp"
+#include "Drawer.hpp"
 
 class Window
 {
@@ -32,10 +33,10 @@ class Window
 
         Window(const Window&) = delete;
         Window& operator=(const Window&) = delete;
-
         
         bool shouldClose() const;
         void processInput() const;
+        void processCameraInput(Drawer&, const float&) const;
         void swapBuffers() const;
         void pollEvents() const;
         void clear() const;

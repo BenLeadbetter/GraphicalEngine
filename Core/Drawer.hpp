@@ -33,11 +33,19 @@ class ViewData
         Vector3 getAt() const { return At; }
         Vector3 getUp() const { return Up; }
 
+        void rotateEyePanLeft(const float&);
+        void rotateEyePanRight(const float&);
+        void rotateEyePitchUp(const float&);
+        void rotateEyePitchDown(const float&);
+        void zoom(const float&);
+
 
     private:
         Vector3 Eye;
         Vector3 At;
         Vector3 Up;
+
+        static constexpr float CAMERA_SPEEED = 0.6f;
 };
 
 class ProjectionData
@@ -103,11 +111,13 @@ class Drawer
         Drawer();
         void setView(const ViewData&);
         void setProjection(const ProjectionData&);
-        //TODO void moveAt(vector);
-        //TODO void rotateEye();
-        void updateShader();
         template<typename T> void setLightData(T&&, T&&, T&&, T&&);
-        LightData getLightData();
+        
+        LightData& getLightData();
+        ViewData& getViewData();
+        ProjectionData& getProjectionData();
+
+        void updateShader();
         void draw(Drawable&);
 
     private:
@@ -115,13 +125,17 @@ class Drawer
         void drawSolidPolygon(const Drawable&);
         void drawWireFramePolygon(const Drawable&);
         void setObjectColorData(const Drawable&);
+        void updateView();
+        void updateProjection();
         void updateLightData();
 
         Matrix4   viewChangeMatrix;
         Matrix4   projectionMatirx;
         
-        Shader      shader;
-        LightData   lightData;
+        Shader shader;
+        LightData lightData;
+        ViewData viewData;
+        ProjectionData projectionData;
 };
 
 template<typename T>

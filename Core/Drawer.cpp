@@ -4,94 +4,171 @@
 
 #include "Drawer.hpp"
 
-
 #include "../GL/GLCheckError.hpp"
 #define glCheckError() glCheckError_(__FILE__, __LINE__)
 
-
-static ViewData DefaultViewData()
+void ViewData::rotateEyePanLeft(const float& dtime)
 {
-    return ViewData(
-        Vector3(3.0f, 0.0f, 0.0f),
-        Vector3(0.0f, 0.0f, 0.0f),
-        Vector3(0.0f, 0.0f, 1.0f)
+    float dAngle = -1.0f * CAMERA_SPEEED * dtime;
+    Matrix3 rotationAboutUp(
+        std::cos(dAngle), -1.0f * std::sin(dAngle), 0.0f,
+        std::sin(dAngle), std::cos(dAngle),         0.0f,
+        0.0f,             0.0f,                     1.0f
     );
+
+    Eye = rotationAboutUp * Eye;
 }
 
-
-static ProjectionData DefaultProjectionData()
+void ViewData::rotateEyePanRight(const float& dtime)
 {
-    return ProjectionData(3, 1, 1, 10);
+    float dAngle = CAMERA_SPEEED * dtime;
+    Matrix3 rotationAboutUp(
+        std::cos(dAngle), -1.0f * std::sin(dAngle), 0.0f,
+        std::sin(dAngle), std::cos(dAngle),         0.0f,
+        0.0f,             0.0f,                     1.0f
+    );
+
+    Eye = rotationAboutUp * Eye;
+}
+
+#include <iostream>
+
+void ViewData::rotateEyePitchUp(const float& dtime)
+{
+    float dAngle = CAMERA_SPEEED * dtime;
+    Vector3 rotationAxis = cross(Eye - At, Up).unitVector();
+    Matrix3 rotationAboutAxis(
+        (float)(std::cos(dAngle) + std::pow(rotationAxis.x(), 2) * (1.0f - std::cos(dAngle))),
+        rotationAxis.x() * rotationAxis.y() * (1.0f - std::cos(dAngle)) - rotationAxis.z() * std::sin(dAngle),
+        rotationAxis.x() * rotationAxis.z() * (1.0f - std::cos(dAngle)) + rotationAxis.y() * std::sin(dAngle),
+        rotationAxis.y() * rotationAxis.x() * (1.0f - std::cos(dAngle)) + rotationAxis.z() * std::sin(dAngle),
+        (float)(std::cos(dAngle) + std::pow(rotationAxis.y(), 2) * (1.0f - std::cos(dAngle))),
+        rotationAxis.y() * rotationAxis.z() * (1.0f - std::cos(dAngle)) - rotationAxis.x() * std::sin(dAngle),
+        rotationAxis.z() * rotationAxis.x() * (1.0f - std::cos(dAngle)) - rotationAxis.y() * std::sin(dAngle),
+        rotationAxis.z() * rotationAxis.y() * (1.0f - std::cos(dAngle)) + rotationAxis.x() * std::sin(dAngle),
+        (float)(std::cos(dAngle) + std::pow(rotationAxis.z(), 2) * (1.0f - std::cos(dAngle)))
+    );
+
+    Eye = rotationAboutAxis * Eye;
+}
+
+void ViewData::rotateEyePitchDown(const float& dtime)
+{
+    float dAngle = -1.0f * CAMERA_SPEEED * dtime;
+    Vector3 rotationAxis = cross(Eye - At, Up).unitVector();
+    Matrix3 rotationAboutAxis(
+        (float)(std::cos(dAngle) + std::pow(rotationAxis.x(), 2) * (1.0f - std::cos(dAngle))),
+        rotationAxis.x() * rotationAxis.y() * (1.0f - std::cos(dAngle)) - rotationAxis.z() * std::sin(dAngle),
+        rotationAxis.x() * rotationAxis.z() * (1.0f - std::cos(dAngle)) + rotationAxis.y() * std::sin(dAngle),
+        rotationAxis.y() * rotationAxis.x() * (1.0f - std::cos(dAngle)) + rotationAxis.z() * std::sin(dAngle),
+        (float)(std::cos(dAngle) + std::pow(rotationAxis.y(), 2) * (1.0f - std::cos(dAngle))),
+        rotationAxis.y() * rotationAxis.z() * (1.0f - std::cos(dAngle)) - rotationAxis.x() * std::sin(dAngle),
+        rotationAxis.z() * rotationAxis.x() * (1.0f - std::cos(dAngle)) - rotationAxis.y() * std::sin(dAngle),
+        rotationAxis.z() * rotationAxis.y() * (1.0f - std::cos(dAngle)) + rotationAxis.x() * std::sin(dAngle),
+        (float)(std::cos(dAngle) + std::pow(rotationAxis.z(), 2) * (1.0f - std::cos(dAngle)))
+    );
+
+    Eye = rotationAboutAxis * Eye;
+}
+
+void ViewData::zoom(const float& dt)
+{
+
 }
 
 Drawer::Drawer():
-viewChangeMatrix(Matrix4(1.0f)),
-projectionMatirx(Matrix4(1.0f)),
-shader(
-    "GL/Shaders/VertexShaderSource.glsl", 
-    "GL/Shaders/FragmentShaderSource.glsl"
-    )
+    viewChangeMatrix(Matrix4(1.0f)),
+    projectionMatirx(Matrix4(1.0f)),
+    shader(
+        "GL/Shaders/VertexShaderSource.glsl", 
+        "GL/Shaders/FragmentShaderSource.glsl"
+        ),
+    viewData(
+        Vector3(3.0f, 0.0f, 0.0f),
+        Vector3(0.0f, 0.0f, 0.0f),
+        Vector3(0.0f, 0.0f, 1.0f)
+    ),
+    projectionData(3, 1, 1, 10)
 {
-    // set the transformation matrices
-    setView(DefaultViewData());
-    setProjection(DefaultProjectionData());
-    
-    // load uniforms to shader
-    shader.use();
-    shader.setMat4("view", viewChangeMatrix);
-    shader.setMat4("proj", projectionMatirx);
-    shader.setVec3("eyePos", DefaultViewData().getEye());
+    updateShader();
 
     glCheckError();
 }
 
-void Drawer::setView(const ViewData& data)
+void Drawer::updateView()
 {
     // create new view-basis
-    Vector3 n = (data.getEye() - data.getAt()).unitVector();
-    Vector3 u = cross(data.getUp(), n).unitVector();
+    Vector3 n = (viewData.getEye() - viewData.getAt()).unitVector();
+    Vector3 u = cross(viewData.getUp(), n).unitVector();
     Vector3 v = cross(n, u).unitVector();
 
     // assemble the matrix
     viewChangeMatrix = Matrix4(
-        u.x(), u.y(), u.z(), -dot(data.getEye(), u),
-        v.x(), v.y(), v.z(), -dot(data.getEye(), v),
-        n.x(), n.y(), n.z(), -dot(data.getEye(), n),
+        u.x(), u.y(), u.z(), -dot(viewData.getEye(), u),
+        v.x(), v.y(), v.z(), -dot(viewData.getEye(), v),
+        n.x(), n.y(), n.z(), -dot(viewData.getEye(), n),
         0.0f,  0.0f,  0.0f,  1.0f
     );
 
     shader.use();
-    shader.setVec3("eyePos", data.getEye());
+    shader.setVec3("eyePos", viewData.getEye());
 }
 
-void Drawer::setProjection(const ProjectionData& data)
+void Drawer::setView(const ViewData& data)
+{
+    viewData = data;
+
+    updateView();
+}
+
+void Drawer::updateProjection()
 {
     projectionMatirx = Matrix4(
-        data.getDist() / data.getAspect(),
+        projectionData.getDist() / projectionData.getAspect(),
         0.0f,           
         0.0f,                                                                   
         0.0f,
         0.0f,                               
-        data.getDist(), 0.0f,                                                                   
+        projectionData.getDist(), 0.0f,                                                                   
         0.0f,
         0.0f,                               
         .0f,           
-        -(data.getFar() + data.getNear()) / (data.getFar() - data.getNear()),   
+        -(projectionData.getFar() + projectionData.getNear()) / (projectionData.getFar() - projectionData.getNear()),   
         -1.0f,
         0.0f,                               
         0.0f,           
-        -2 * data.getNear() * data.getFar() / (data.getFar() - data.getNear()), 
+        -2 * projectionData.getNear() * projectionData.getFar() / (projectionData.getFar() - projectionData.getNear()), 
         0.0f
-    );
+    );    
 }
 
-LightData Drawer::getLightData()
+void Drawer::setProjection(const ProjectionData& data)
+{
+    projectionData = data;
+
+    updateProjection();
+}
+
+LightData& Drawer::getLightData()
 {
     return lightData;
 }
 
+ViewData& Drawer::getViewData()
+{
+    return viewData;
+}
+
+ProjectionData& Drawer::getProjectionData()
+{
+    return projectionData;
+}
+
 void Drawer::updateShader()
 {
+    updateLightData();
+    updateView();
+    updateProjection();
 
     // load uniforms to shader
     shader.setMat4("view", viewChangeMatrix);
