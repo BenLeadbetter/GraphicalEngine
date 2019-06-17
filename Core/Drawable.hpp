@@ -47,7 +47,7 @@ class ObjectColorData
         
     private:
         Vector3 diffuse = Vector4({0.7f, 0.7f, 0.7f});
-        Vector3 specular = Vector4({1.0f, 1.0f, 1.0f});
+        Vector3 specular = Vector4({0.5f, 0.5f, 0.5f});
         Vector3 emissive = Vector4({0.0f, 0.0f, 0.0f});
         Vector3 ambient = Vector4({1.0f, 1.0f, 1.0f});
         float shininess = 1.0f;

@@ -15,8 +15,9 @@ class Scene
 
     public:
         Scene() {};
-        void draw(Drawer&) const;
-        void addDrawable(std::shared_ptr<Drawable>); 
+        void draw(const std::unique_ptr<Drawer>&) const;
+        void addDrawable(std::shared_ptr<Drawable>);
+        void loadArbitraryMesh(char*); 
 
     protected:
         std::vector<std::shared_ptr<Drawable>> drawables;

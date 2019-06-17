@@ -4,30 +4,29 @@
 #include "Core/Scene.hpp"
 #include "Core/BufferData.hpp"
 #include "Core/ObjLoader.h"
+#include "Core/render.hpp"
 
 int main(int argc, char** argv)
 {
     Window window;
-    RainbowDrawer drawer;
     MeshManager meshManager;
     Stopwatch stopwatch;
     Scene scene;
-    drawer.setView(
+
+    if(argc > 1)
+        scene.loadArbitraryMesh(argv[1]);
+
+    RenderingMode renderingMode = decideRenderingMode(argc, argv);
+    
+    std::unique_ptr<Drawer> drawer = getDrawer(renderingMode);
+    
+    drawer->setView(
         ViewData(
             Vector3(0.0f, 5.0f, 5.5f),
             Vector3(0.0f, 0.0f, 0.0f),
             Vector3(0.0f, 0.0f, 1.0f)
         )
     );
-
-    if(argc > 1)
-    {   
-        ObjLoader loader(argv[1]);
-        std::shared_ptr<BufferData> pObject = std::make_shared<BufferData>(loader.getData());
-        std::shared_ptr<Drawable> pDrawable = std::make_shared<Drawable>(pObject);
-        scene.addDrawable(pDrawable);
-    }
-
 
     // render loop
     // -----------
@@ -46,7 +45,7 @@ int main(int argc, char** argv)
         /*
          *  Update
          */ 
-        drawer.updateShader();
+        drawer->updateShader();
 
         /*
         *   Render 

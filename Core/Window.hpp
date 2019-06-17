@@ -36,7 +36,7 @@ class Window
         
         bool shouldClose() const;
         void processInput() const;
-        void processCameraInput(Drawer&, const float&) const;
+        void processCameraInput(const std::unique_ptr<Drawer>&, const float&) const;
         void swapBuffers() const;
         void pollEvents() const;
         void clear() const;
