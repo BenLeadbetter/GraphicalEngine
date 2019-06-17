@@ -12,6 +12,9 @@ RenderingMode decideRenderingMode(int argc, char** argv)
         std::string flag(argv[i]);
         if(flag == "-rainbow")
             ret = RenderingMode::RAINBOW;
+        
+        else if(flag == "-disco")
+            ret = RenderingMode::DISCO;
     }
 
     return ret;
@@ -25,6 +28,10 @@ std::unique_ptr<Drawer> getDrawer(RenderingMode& mode)
         return std::make_unique<RainbowDrawer>();
         break;
     
+    case RenderingMode::DISCO:
+        return std::make_unique<DiscoDrawer>();
+        break;
+
     default:
         return std::make_unique<Drawer>();
         break;

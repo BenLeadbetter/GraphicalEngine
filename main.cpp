@@ -5,6 +5,7 @@
 #include "Core/BufferData.hpp"
 #include "Core/ObjLoader.h"
 #include "Core/render.hpp"
+#include <thread>
 
 int main(int argc, char** argv)
 {
@@ -17,7 +18,7 @@ int main(int argc, char** argv)
         scene.loadArbitraryMesh(argv[1]);
 
     RenderingMode renderingMode = decideRenderingMode(argc, argv);
-    
+
     std::unique_ptr<Drawer> drawer = getDrawer(renderingMode);
     
     drawer->setView(

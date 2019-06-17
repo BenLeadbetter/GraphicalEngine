@@ -308,5 +308,21 @@ void RainbowDrawer::draw(Drawable& drawable)
     
     else if(drawable.getDrawData().renderMode == RenderMode::LINE)
         drawWireFramePolygon(drawable);
+}
 
+DiscoDrawer::DiscoDrawer()
+{
+    setShader(Shader("GL/Shaders/DiscoVertex.glsl", "GL/Shaders/DiscoFrag.glsl"));
+}
+
+void DiscoDrawer::draw(Drawable& drawable)
+{
+    Matrix4 worldTransform(drawable.getDrawData().WorldTransform);
+    shader.setMat4("world", worldTransform);
+    
+    if(drawable.getDrawData().renderMode == RenderMode::FILL)
+        drawSolidPolygon(drawable);
+    
+    else if(drawable.getDrawData().renderMode == RenderMode::LINE)
+        drawWireFramePolygon(drawable);
 }

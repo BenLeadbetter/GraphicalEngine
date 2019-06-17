@@ -180,4 +180,16 @@ class RainbowDrawer : public Drawer
         void setWidthToShader(const float&);
 };
 
+class DiscoDrawer : public Drawer
+{
+    public:
+        DiscoDrawer();
+        ~DiscoDrawer() {};
+
+        void draw(Drawable&);
+    
+    private:
+
+};
+
 #endif

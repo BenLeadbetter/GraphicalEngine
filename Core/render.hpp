@@ -6,7 +6,8 @@
 
 enum class RenderingMode {
     DEFAULT,
-    RAINBOW
+    RAINBOW,
+    DISCO
 };
 
 RenderingMode decideRenderingMode(int argc, char** argv);
