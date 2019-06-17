@@ -17,6 +17,7 @@ class BufferData
         unsigned int getVertexArrayID() const;
         unsigned int getVertexBufferID() const;
         unsigned int getNumberOfVertices() const;
+        ObjectData getObjectData() const { return data; };
 
     private:
         void createVertexArray();
@@ -28,9 +29,10 @@ class BufferData
         void deleteVertexArray();
 
     private:
-        unsigned int    VertexArrayID;
-        unsigned int    VertexBufferID;
-        unsigned int    NumberOfVertices;
+        unsigned int VertexArrayID;
+        unsigned int VertexBufferID;
+        unsigned int NumberOfVertices;
+        ObjectData data;
 };
 
 std::vector<float> createVertexNormalVector(std::vector<float>, std::vector<float>);
@@ -39,9 +41,10 @@ template<typename T>
 BufferData::BufferData(T&& objectData)
 {
     createVertexArray();
-    createVertexBuffer(std::forward<T>(objectData));
+    createVertexBuffer(objectData);
     enablePositionAttribPointer();
     enableNormalAttribPointer();
+    data = std::forward<T>(objectData);
 }
 
 void BUFFER_DATA_appendVertexData(

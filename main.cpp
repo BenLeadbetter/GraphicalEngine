@@ -8,7 +8,7 @@
 int main(int argc, char** argv)
 {
     Window window;
-    Drawer drawer;
+    RainbowDrawer drawer;
     MeshManager meshManager;
     Stopwatch stopwatch;
     Scene scene;
@@ -27,6 +27,7 @@ int main(int argc, char** argv)
         std::shared_ptr<Drawable> pDrawable = std::make_shared<Drawable>(pObject);
         scene.addDrawable(pDrawable);
     }
+
 
     // render loop
     // -----------

@@ -112,21 +112,25 @@ class Drawer
 {
     public:
         Drawer();
+        virtual ~Drawer() {};
         void setView(const ViewData&);
         void setProjection(const ProjectionData&);
         template<typename T> void setLightData(T&&, T&&, T&&, T&&);
+        template<typename Sh> void setShader(Sh&&);
         
         LightData& getLightData();
         ViewData& getViewData();
         ProjectionData& getProjectionData();
 
         void updateShader();
-        void draw(Drawable&);
+        virtual void draw(Drawable&);
+
+    protected:
+        void drawSolidPolygon(const Drawable&);
+        void drawWireFramePolygon(const Drawable&);
 
     private:
         void loadShader();
-        void drawSolidPolygon(const Drawable&);
-        void drawWireFramePolygon(const Drawable&);
         void setObjectColorData(const Drawable&);
         void updateView();
         void updateProjection();
@@ -135,10 +139,12 @@ class Drawer
         Matrix4   viewChangeMatrix;
         Matrix4   projectionMatirx;
         
-        Shader shader;
         LightData lightData;
         ViewData viewData;
         ProjectionData projectionData;
+    
+    protected:
+        Shader shader;
 };
 
 template<typename T>
@@ -153,5 +159,25 @@ void Drawer::setLightData(T&& diffIn, T&& specIn, T&& ambiIn, T&& dirIn)
 
     updateLightData();
 }
+
+template<typename Sh> 
+void Drawer::setShader(Sh&& s)
+{
+    shader = std::forward<Sh>(s);
+    updateShader();
+}
+
+class RainbowDrawer : public Drawer
+{
+    public:
+        RainbowDrawer();
+        ~RainbowDrawer() {};
+
+        void draw(Drawable&);
+    
+    private:
+        float getWidthValue(const Drawable&) const;
+        void setWidthToShader(const float&);
+};
 
 #endif

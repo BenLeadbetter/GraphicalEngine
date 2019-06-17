@@ -65,6 +65,8 @@ class Drawable
         
         ObjectColorData getColorData() const;
         DrawData getDrawData() const;
+        ObjectData getMeshData() const { return bufferData->getObjectData(); }
+
         void setMesh(std::shared_ptr<BufferData> dataPtr);
         void setColorData(const ObjectColorData&);
         void setRenderMode(RenderMode mode);

@@ -1,8 +1,5 @@
-/* 
- *  Source file for the Drawer class header 
-*/
-
 #include "Drawer.hpp"
+#include <algorithm>
 
 #include "../GL/GLCheckError.hpp"
 #define glCheckError() glCheckError_(__FILE__, __LINE__)
@@ -84,16 +81,16 @@ void ProjectionData::zoomIn(const float& dt)
 Drawer::Drawer():
     viewChangeMatrix(Matrix4(1.0f)),
     projectionMatirx(Matrix4(1.0f)),
-    shader(
-        "GL/Shaders/VertexShaderSource.glsl", 
-        "GL/Shaders/FragmentShaderSource.glsl"
-        ),
     viewData(
         Vector3(3.0f, 0.0f, 0.0f),
         Vector3(0.0f, 0.0f, 0.0f),
         Vector3(0.0f, 0.0f, 1.0f)
     ),
-    projectionData(3, 1, 1, 10)
+    projectionData(3, 1, 1, 10),
+    shader(
+        "GL/Shaders/DefaultVertex.glsl", 
+        "GL/Shaders/DefaultFrag.glsl"
+        )
 {
     updateShader();
 
@@ -102,12 +99,10 @@ Drawer::Drawer():
 
 void Drawer::updateView()
 {
-    // create new view-basis
     Vector3 n = (viewData.getEye() - viewData.getAt()).unitVector();
     Vector3 u = cross(viewData.getUp(), n).unitVector();
     Vector3 v = cross(n, u).unitVector();
 
-    // assemble the matrix
     viewChangeMatrix = Matrix4(
         u.x(), u.y(), u.z(), -dot(viewData.getEye(), u),
         v.x(), v.y(), v.z(), -dot(viewData.getEye(), v),
@@ -175,7 +170,6 @@ void Drawer::updateShader()
     updateView();
     updateProjection();
 
-    // load uniforms to shader
     shader.setMat4("view", viewChangeMatrix);
     shader.setMat4("proj", projectionMatirx);
 }
@@ -274,5 +268,45 @@ void Drawer::updateLightData()
     shader.setVec3("srcSpec", getLightData().getSpecular());
     shader.setVec3("srcAmbi", getLightData().getAmbient());
     shader.setVec3("lightDir", getLightData().getLightDir());
+}
+
+RainbowDrawer::RainbowDrawer()
+{
+    setShader(Shader("GL/Shaders/RainbowVertex.glsl", "GL/Shaders/RainbowFrag.glsl"));
+    updateShader();
+}
+
+float RainbowDrawer::getWidthValue(const Drawable& drawable) const
+{
+    ObjectData data = drawable.getMeshData();
+    auto nVerts = data.vertices.size();
+    float maxX = -10000.0;
+    float minX = 10000.0;
+
+    for(unsigned int i = 0; i != nVerts; ++i)
+    {
+        maxX = std::max(maxX, data.vertices[i][0]);
+        minX = std::min(minX, data.vertices[i][0]);
+    }
+
+    return maxX - minX;
+}
+
+void RainbowDrawer::setWidthToShader(const float& width)
+{
+    shader.setFloat("modelWidth", width);
+}
+
+void RainbowDrawer::draw(Drawable& drawable)
+{
+    Matrix4 worldTransform(drawable.getDrawData().WorldTransform);
+    shader.setMat4("world", worldTransform);
+    setWidthToShader(getWidthValue(drawable));
+    
+    if(drawable.getDrawData().renderMode == RenderMode::FILL)
+        drawSolidPolygon(drawable);
+    
+    else if(drawable.getDrawData().renderMode == RenderMode::LINE)
+        drawWireFramePolygon(drawable);
 
 }
