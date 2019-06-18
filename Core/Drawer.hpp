@@ -122,23 +122,24 @@ class Drawer
         ViewData& getViewData();
         ProjectionData& getProjectionData();
 
-        void updateShader();
+        virtual void updateShader(const float& dt);
         virtual void draw(Drawable&);
 
     protected:
         void drawSolidPolygon(const Drawable&);
         void drawWireFramePolygon(const Drawable&);
 
-    private:
         void loadShader();
         void setObjectColorData(const Drawable&);
         void updateView();
         void updateProjection();
         void updateLightData();
 
+    
         Matrix4   viewChangeMatrix;
         Matrix4   projectionMatirx;
-        
+
+    private:    
         LightData lightData;
         ViewData viewData;
         ProjectionData projectionData;
@@ -164,7 +165,7 @@ template<typename Sh>
 void Drawer::setShader(Sh&& s)
 {
     shader = std::forward<Sh>(s);
-    updateShader();
+    updateShader(0.0f);
 }
 
 class RainbowDrawer : public Drawer
@@ -187,8 +188,17 @@ class DiscoDrawer : public Drawer
         ~DiscoDrawer() {};
 
         void draw(Drawable&);
+        void updateShader(const float& dt);
     
     private:
+        void setSpotlight1Data(const Vector3& tar, const Vector3& col);
+        void setSpotlight2Data(const Vector3& tar, const Vector3& col);
+        void setSpotlight3Data(const Vector3& tar, const Vector3& col);
+        static constexpr float SPOT_SPEED = 10.0f;
+        float spotlight1CurrentAngle = 0.0f;
+        float spotlight2CurrentAngle = 1.0f;
+        float spotlight3CurrentAngle = 0.5f;
+        void updateSpotlights(const float& dt);
 
 };
 

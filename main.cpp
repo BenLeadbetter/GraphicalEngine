@@ -46,7 +46,7 @@ int main(int argc, char** argv)
         /*
          *  Update
          */ 
-        drawer->updateShader();
+        drawer->updateShader(dtSeconds);
 
         /*
         *   Render 

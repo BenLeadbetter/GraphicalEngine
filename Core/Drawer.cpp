@@ -1,5 +1,6 @@
 #include "Drawer.hpp"
 #include <algorithm>
+#include <cmath>
 
 #include "../GL/GLCheckError.hpp"
 #define glCheckError() glCheckError_(__FILE__, __LINE__)
@@ -92,7 +93,7 @@ Drawer::Drawer():
         "GL/Shaders/DefaultFrag.glsl"
         )
 {
-    updateShader();
+    updateShader(0.0f);
 
     glCheckError();
 }
@@ -164,7 +165,7 @@ ProjectionData& Drawer::getProjectionData()
     return projectionData;
 }
 
-void Drawer::updateShader()
+void Drawer::updateShader(const float&)
 {
     updateLightData();
     updateView();
@@ -273,7 +274,7 @@ void Drawer::updateLightData()
 RainbowDrawer::RainbowDrawer()
 {
     setShader(Shader("GL/Shaders/RainbowVertex.glsl", "GL/Shaders/RainbowFrag.glsl"));
-    updateShader();
+    updateShader(0.0);
 }
 
 float RainbowDrawer::getWidthValue(const Drawable& drawable) const
@@ -313,6 +314,12 @@ void RainbowDrawer::draw(Drawable& drawable)
 DiscoDrawer::DiscoDrawer()
 {
     setShader(Shader("GL/Shaders/DiscoVertex.glsl", "GL/Shaders/DiscoFrag.glsl"));
+    setLightData(
+        Vector3(0.3f, 0.0f, 0.3f),
+        Vector3(0.5f, 0.5f, 0.5f),
+        Vector3(0.2f, 0.0f, 0.5f),
+        Vector3(1.0f, -0.8f, 0.7f)
+    );
 }
 
 void DiscoDrawer::draw(Drawable& drawable)
@@ -325,4 +332,55 @@ void DiscoDrawer::draw(Drawable& drawable)
     
     else if(drawable.getDrawData().renderMode == RenderMode::LINE)
         drawWireFramePolygon(drawable);
+}
+
+void DiscoDrawer::setSpotlight1Data(const Vector3& tar, const Vector3& col)
+{
+    shader.setVec3("spotlight1Target", tar);
+    shader.setVec3("spotlight1Color", col);
+}
+
+void DiscoDrawer::setSpotlight2Data(const Vector3& tar, const Vector3& col)
+{
+    shader.setVec3("spotlight2Target", tar);
+    shader.setVec3("spotlight2Color", col);
+}
+
+void DiscoDrawer::setSpotlight3Data(const Vector3& tar, const Vector3& col)
+{
+    shader.setVec3("spotlight3Target", tar);
+    shader.setVec3("spotlight3Color", col);
+}
+
+void DiscoDrawer::updateShader(const float& dt)
+{
+    updateLightData();
+    updateView();
+    updateProjection();
+    updateSpotlights(dt);
+
+    shader.setMat4("view", viewChangeMatrix);
+    shader.setMat4("proj", projectionMatirx);
+}
+
+void DiscoDrawer::updateSpotlights(const float& dt)
+{
+    spotlight1CurrentAngle += SPOT_SPEED * 0.8f * dt;
+    spotlight2CurrentAngle += SPOT_SPEED * 0.6f * dt;
+    spotlight3CurrentAngle += SPOT_SPEED * 0.5f * dt;
+
+    setSpotlight1Data(
+        Vector3(2.5f * std::cos(spotlight1CurrentAngle) + 1.0f, 0.0f, 1.5f *std::sin(spotlight1CurrentAngle)),
+        Vector3(1.0f, 0.0f, 0.0f)
+    );
+    setSpotlight2Data(
+        Vector3(0.5f * std::cos(spotlight2CurrentAngle) - 1.0f, 0.0f, 3.5f *std::sin(spotlight2CurrentAngle)),
+        Vector3(1.0f, 0.0f, 1.0f)
+    );
+    setSpotlight3Data(
+        Vector3(4.0f * std::cos(spotlight2CurrentAngle), 0.0f, 1.0f * std::sin(spotlight2CurrentAngle) + 0.5f),
+        Vector3(0.2f, 0.0f, 1.0f)
+    );
+
+
 }
