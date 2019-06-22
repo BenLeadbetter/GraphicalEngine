@@ -9,7 +9,6 @@
 class MeshManager
 {
     public:
-
         MeshManager();
         std::shared_ptr<BufferData> getMesh(MeshID);
     

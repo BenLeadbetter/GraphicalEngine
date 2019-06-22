@@ -10,13 +10,13 @@
 Drawable::Drawable():
     transform(Matrix4(1.0f)),
     bufferData(nullptr),
-    renderMode(RenderMode::LINE)
+    renderMode(RenderMode::FILL)
 {};
 
 Drawable::Drawable(std::shared_ptr<BufferData> dataPtr):
     transform(Matrix4(1.0f)),
     bufferData(dataPtr),
-    renderMode(RenderMode::LINE)
+    renderMode(RenderMode::FILL)
 {};
 
 

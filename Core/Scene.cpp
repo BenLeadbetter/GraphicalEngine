@@ -1,17 +1,27 @@
 #include "Scene.hpp"
+#include "ObjLoader.h"
+
 #define GRAVITATIONAL_CONST 100.0
 
-void Scene::draw(Drawer& drawer) const
+void Scene::draw(const std::unique_ptr<Drawer>& drawer) const
 {
     vecSize nDrawables = drawables.size();
 
     for(vecSize i = 0; i != nDrawables; ++i)
-        drawer.draw(*drawables[i]);
+        drawer->draw(*drawables[i]);
 }
 
 void Scene::addDrawable(std::shared_ptr<Drawable> pDrawable)
 {
     drawables.push_back(pDrawable);
+}
+
+void Scene::loadArbitraryMesh(char* pathToMesh)
+{
+    ObjLoader loader(pathToMesh);
+    std::shared_ptr<BufferData> pObject = std::make_shared<BufferData>(loader.getData());
+    std::shared_ptr<Drawable> pDrawable = std::make_shared<Drawable>(pObject);
+    addDrawable(pDrawable);
 }
 
 ParticleCollider::ParticleCollider(MeshManager& meshManager)

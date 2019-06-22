@@ -99,25 +99,33 @@ void Window::processInput() const
         glfwSetWindowShouldClose(window, true);
 }
 
-void Window::processCameraInput(Drawer& drawer, const float& dtime) const
+void Window::processCameraInput(const std::unique_ptr<Drawer>& drawer, const float& dtime) const
 {
     unsigned int key;
 
     key = glfwGetKey(window, GLFW_KEY_LEFT);
     if(key == GLFW_PRESS)
-        drawer.getViewData().rotateEyePanLeft(dtime);
+        drawer->getViewData().rotateEyePanLeft(dtime);
 
     key = glfwGetKey(window, GLFW_KEY_RIGHT);
     if(key == GLFW_PRESS)
-        drawer.getViewData().rotateEyePanRight(dtime);
+        drawer->getViewData().rotateEyePanRight(dtime);
     
     key = glfwGetKey(window, GLFW_KEY_UP);
     if(key == GLFW_PRESS)
-        drawer.getViewData().rotateEyePitchUp(dtime);
+        drawer->getViewData().rotateEyePitchUp(dtime);
 
     key = glfwGetKey(window, GLFW_KEY_DOWN);
     if(key == GLFW_PRESS)
-        drawer.getViewData().rotateEyePitchDown(dtime);
+        drawer->getViewData().rotateEyePitchDown(dtime);
+
+    key = glfwGetKey(window, GLFW_KEY_MINUS);
+    if(key == GLFW_PRESS)
+        drawer->getProjectionData().zoomOut(dtime);
+
+    key = glfwGetKey(window, GLFW_KEY_EQUAL);
+    if(key == GLFW_PRESS)
+        drawer->getProjectionData().zoomIn(dtime);
 }
 
 void Window::swapBuffers() const

@@ -37,8 +37,6 @@ class ViewData
         void rotateEyePanRight(const float&);
         void rotateEyePitchUp(const float&);
         void rotateEyePitchDown(const float&);
-        void zoom(const float&);
-
 
     private:
         Vector3 Eye;
@@ -67,12 +65,17 @@ class ProjectionData
         float getAspect() const { return Aspect; }
         float getNear() const { return Near; }
         float getFar() const { return Far; }
+
+        void zoomOut(const float&);
+        void zoomIn(const float&);
         
     private:
         float Dist;
         float Aspect;
         float Near;
         float Far;
+
+        static constexpr float CAMERA_SPEEED = 0.6f;
 };
 
 class LightData
@@ -109,33 +112,40 @@ class Drawer
 {
     public:
         Drawer();
+        virtual ~Drawer() {};
         void setView(const ViewData&);
         void setProjection(const ProjectionData&);
         template<typename T> void setLightData(T&&, T&&, T&&, T&&);
+        template<typename Sh> void setShader(Sh&&);
         
         LightData& getLightData();
         ViewData& getViewData();
         ProjectionData& getProjectionData();
 
-        void updateShader();
-        void draw(Drawable&);
+        virtual void updateShader(const float& dt);
+        virtual void draw(Drawable&);
 
-    private:
-        void loadShader();
+    protected:
         void drawSolidPolygon(const Drawable&);
         void drawWireFramePolygon(const Drawable&);
+
+        void loadShader();
         void setObjectColorData(const Drawable&);
         void updateView();
         void updateProjection();
         void updateLightData();
 
+    
         Matrix4   viewChangeMatrix;
         Matrix4   projectionMatirx;
-        
-        Shader shader;
+
+    private:    
         LightData lightData;
         ViewData viewData;
         ProjectionData projectionData;
+    
+    protected:
+        Shader shader;
 };
 
 template<typename T>
@@ -150,5 +160,46 @@ void Drawer::setLightData(T&& diffIn, T&& specIn, T&& ambiIn, T&& dirIn)
 
     updateLightData();
 }
+
+template<typename Sh> 
+void Drawer::setShader(Sh&& s)
+{
+    shader = std::forward<Sh>(s);
+    updateShader(0.0f);
+}
+
+class RainbowDrawer : public Drawer
+{
+    public:
+        RainbowDrawer();
+        ~RainbowDrawer() {};
+
+        void draw(Drawable&);
+    
+    private:
+        float getWidthValue(const Drawable&) const;
+        void setWidthToShader(const float&);
+};
+
+class DiscoDrawer : public Drawer
+{
+    public:
+        DiscoDrawer();
+        ~DiscoDrawer() {};
+
+        void draw(Drawable&);
+        void updateShader(const float& dt);
+    
+    private:
+        void setSpotlight1Data(const Vector3& tar, const Vector3& col);
+        void setSpotlight2Data(const Vector3& tar, const Vector3& col);
+        void setSpotlight3Data(const Vector3& tar, const Vector3& col);
+        static constexpr float SPOT_SPEED = 10.0f;
+        float spotlight1CurrentAngle = 0.0f;
+        float spotlight2CurrentAngle = 1.0f;
+        float spotlight3CurrentAngle = 0.5f;
+        void updateSpotlights(const float& dt);
+
+};
 
 #endif

@@ -15,7 +15,7 @@ enum class MeshID {
 class Mesh
 {
     public:
-        static std::unique_ptr<Mesh> createMesh(MeshID);
+        static std::unique_ptr<Mesh> createMesh(MeshID);  
         virtual ObjectData createObjectData() = 0;
 };
 

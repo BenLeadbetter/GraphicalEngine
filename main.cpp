@@ -1,43 +1,33 @@
 #include "Core/Window.hpp"
 #include "Core/Drawer.hpp"
-#include "Core/MeshManager.hpp"
-#include "Core/Particle.hpp"
-#include "Core/CollisionBox.hpp"
 #include "Core/Stopwatch.hpp"
 #include "Core/Scene.hpp"
-#include <cstdlib>
+#include "Core/BufferData.hpp"
+#include "Core/ObjLoader.h"
+#include "Core/render.hpp"
+#include <thread>
 
 int main(int argc, char** argv)
 {
     Window window;
-    Drawer drawer;
     MeshManager meshManager;
     Stopwatch stopwatch;
-    ParticleCollider particleCollider(meshManager);
-    drawer.setView(
+    Scene scene;
+
+    if(argc > 1)
+        scene.loadArbitraryMesh(argv[1]);
+
+    RenderingMode renderingMode = decideRenderingMode(argc, argv);
+
+    std::unique_ptr<Drawer> drawer = getDrawer(renderingMode);
+    
+    drawer->setView(
         ViewData(
-            Vector3(8.0f, 5.0f, 5.5f),
+            Vector3(0.0f, 5.0f, 5.5f),
             Vector3(0.0f, 0.0f, 0.0f),
             Vector3(0.0f, 0.0f, 1.0f)
         )
     );
-
-    unsigned int nParticles;
-    if(argc > 1)
-        nParticles = std::stoi(argv[1]);
-    else
-        nParticles = 3;    
-    
-    for(unsigned int i = 0; i != nParticles; ++i)
-    {
-        std::srand(i*stopwatch.elapsed_time<int, std::chrono::milliseconds>());
-        Particle newParticle(meshManager);
-        newParticle.setVelocity(Vector3((float)(rand() % 8 - 4), (float)(2*rand() % 8 - 4), (float)(3*rand() % 8 - 4)));
-        newParticle.setDisplaceMent(Vector3((float)((4*rand()) % 25 - 12.5f) / 10.0f, (float)((5*rand()) % 25 - 12.5f) / 10.0f, (float)((6*rand()) % 25 - 12.5f) / 10.0f));
-        newParticle.setColor(Vector3((float)(7*rand() % 100) / 100.0f, (float)(8*rand() % 100) / 100.0f, (float)(9*rand() & 100) / 100.0f));
-
-        particleCollider.addParticle(std::make_shared<Particle>(newParticle));
-    }
 
     // render loop
     // -----------
@@ -56,14 +46,13 @@ int main(int argc, char** argv)
         /*
          *  Update
          */ 
-        drawer.updateShader();
-        particleCollider.update(dtSeconds);
+        drawer->updateShader(dtSeconds);
 
         /*
         *   Render 
         */ 
         window.clear();
-        particleCollider.draw(drawer);
+        scene.draw(drawer);
         window.swapBuffers();
     }
 
